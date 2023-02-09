@@ -4,3 +4,5 @@ Dans ce fichiers nous expliquerons notre avancée et ce que nous avons réaliser
 - Langage JS pour le début à voir vendredi pour confirmation
 
 - Installation d'un serveur Raspberry Pi afin de faire toute la partie en ligne du jeu
+
+- On commence par afficher un plateau de jeu vide
