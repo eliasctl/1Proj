@@ -1,0 +1,6 @@
+Dans ce fichiers nous expliquerons notre avancée et ce que nous avons réaliser.
+
+- Préparation du projet (modèle MVC)
+- Langage JS pour le début à voir vendredi pour confirmation
+
+- Installation d'un serveur Raspberry Pi afin de faire toute la partie en ligne du jeu
