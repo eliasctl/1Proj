@@ -1,0 +1,39 @@
+.background {
+  border: 3px solid white;
+  border-radius: 10px;
+  margin: 200px 300px 0px 350px;
+  color: white;
+  width: 600px;
+  height: 400px;
+  padding: 10px;
+}
+
+button {
+  background-color: white;
+  color: #6f9de2;
+  border: 2px solid white;
+  border-radius: 5px;
+  padding: 5px;
+  margin: 100px;
+  width: 120px;
+  font-weight: bold;
+}
+
+p {
+  text-align: center;
+  margin: 40px 50px 5px 50px;
+}
+
+h1 {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 25px;
+  margin-top: 80px;
+  color: white;
+  font-family: verdana;
+  font-weight: none;
+}
+
+body {
+  background-color: #6f9de2;
+}
