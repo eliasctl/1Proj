@@ -19,5 +19,3 @@ def initialisation_du_nombre_de_joueurs():
             input("Veuillez entrer le nombre de joueur (entre 2 et 4): "))
     return nbJoueur
 # Fin de la fonction d'initialisation du nombre de joueur qui retourne le nombre de joueur
-
-# Fontction ... requiert la fonction test()
