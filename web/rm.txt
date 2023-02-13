@@ -1,5 +1,10 @@
 Dans ce fichiers nous expliquerons notre avancée et ce que nous avons réaliser.
 
+Codes: 
+
+Serveur : eliascastel.ddns.net usr=pi code=root
+BDD: usr=pi code=@root123
+
 - Préparation du projet (modèle MVC)
 - Langage JS pour le début à voir vendredi pour confirmation
 
