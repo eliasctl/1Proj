@@ -3,8 +3,8 @@ import mysql.connector
 mydb = mysql.connector.connect(
     host="eliascastel.ddns.net",
     port="3306",
-    user="pi",
-    password="@root123",
+    user="root",
+    password="@RootRoot1212",
     database="test"
 )
 
