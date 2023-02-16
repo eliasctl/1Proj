@@ -6,14 +6,17 @@ import pygame
 def initialisation_du_nombre_de_joueurs():
     nbJoueur = 0
     while nbJoueur < 2 or nbJoueur > 4:
-        nbJoueur = int(
-            input("Veuillez entrer le nombre de joueur (entre 2 et 4): "))
+        nbJoueur = int(input("Veuillez entrer le nombre de joueur (entre 2 et 4): "))
     return nbJoueur
 # Fin de la fonction initialisation_du_nombre_de_joueurs
 
 # Début de la fonction d'initialisation du nombre de barrière qui retourne un entier corespondant au nombre de barrières totales
 def initialisation_du_nombre_de_barrieres():
-    print("⚠️ ATTENTION ⚠️ Dev en cours")
+    print("⚠️ ATTENTION ⚠️ Dev en cours") # 20 de base
+    nombre_de_barrieres_totales = int(input("Veuillez entrer le nombre de joueur (entre 2 et 4): "))
+    while nombre_de_barrieres_totales % 4 != 0 or nombre_de_barrieres_totales < 4 or nombre_de_barrieres_totales > 40:
+        nombre_de_barrieres_totales = int(input("Veuillez entrer un nombre de barrières multiple de 4 et compris entre 4 et 20: "))
+    return nombre_de_barrieres_totales
 # Fin de la fonction initialisation_du_nombre_de_barrieres
 
 # Début de la fonction de création de la liste des joueurs qui retourne une liste de la forme (nom du joueur, nombre de barrières, position x, position y)
@@ -29,8 +32,8 @@ def creation_de_la_liste_des_joueurs(nombre_de_joueurs, nombre_de_barrieres_tota
 
 # Début de la fonction d'initialisation de la taille du plateau (5x5, 7x7, 9x9, 11x11) qui retourne un entier corespondant à la heuteur et la largeur de la grille
 def initialisation_de_la_taille_du_plateau():
-    print("⚠️ ATTENTION ⚠️ Dev en cours")
-    taille = 0  # 9 de base
+    print("⚠️ ATTENTION ⚠️ Dev en cours") # 9 de base
+    taille = 0 
     while taille == 5 and taille == 7 and taille == 9 and taille == 11:
         taille = int(
             input("Entrez la taille du plateau il doit être égale à 5, 7, 9 ou 11 : "))
@@ -41,3 +44,5 @@ def initialisation_de_la_taille_du_plateau():
 def creation_du_plateau():
     print("⚠️ ATTENTION ⚠️ Dev en cours")
 # Fin de la fonction creation_du_plateau
+    
+plateau = [[0,0,0,0], [0,0,0,0], [0,0,0,0], [0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
