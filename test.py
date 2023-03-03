@@ -1,10 +1,3 @@
-# TODO : Le menu
-# TODO : Le deplacement des joueurs
-# TODO : Le fait de poser des barrières
-# TODO : La fonction de victoire
-# TODO : L'affichage des joueurs sur le plateau
-
-
 # import des modules
 import pygame
 from fonctions import *
@@ -26,12 +19,12 @@ class Joueur:
 
 
 # variables du jeux
-t_fenetre = (800, 800)
+t_fenetre = (970, 970)
 pygame.display.set_caption("Quoridor")
 nb_cases = 11
 nb_barrieres = nb_cases - 1
 t_cases = ((t_fenetre[0] // nb_cases) - nb_barrieres)
-largeur_barriere = (t_fenetre[0] - (nb_cases * t_cases)) // nb_barrieres
+l_barrière = (t_fenetre[0] - (nb_cases * t_cases)) // nb_barrieres
 hauteur_barriere = t_fenetre[0]
 
 # définition des couleurs
@@ -56,27 +49,28 @@ while running:
 
     x = 0
     y = 0
+    r = 0
 
-    # boucle pour l'affichage de la grille
-    for i in range(nb_cases):
-        for i in range(nb_cases - 1):
+    # affichage de la grille
+    for W in range(nb_cases):
+        for i in range(nb_cases - 1):  # boucle qui dessine une case et une barrière
             # on affiche un carré
-            pygame.draw.rect(screen, gray, pygame.Rect(x, y, t_cases, t_cases))
-            # on decale la position x
-            x += t_cases
+            pygame.draw.rect(screen, gray, pygame.Rect(
+                x, y, t_cases, t_cases))
+            x += t_cases  # on decale la position x
             # on affiche une barrière
             pygame.draw.rect(screen, white, pygame.Rect(
-                x, y, largeur_barriere, t_cases))
-            # on decale la position x
-            x += largeur_barriere
-        # on decale la position x
+                x, y, l_barrière, t_cases))
+            x += l_barrière  # on decale la position x
+        # on affiche le dernier carré
+        pygame.draw.rect(screen, gray, pygame.Rect(
+            x, y, t_cases, t_cases))
+        # on update x, y
         x = 0
-        # on decale la position y
         y += t_cases
-        for i in range(nb_cases // 2):
-            # on affiche une barrière de la taille de deux cases
-            pygame.draw.rect(screen, white, pygame.Rect(
-                screen, white, pygame.Rect(x, y, t_cases * 2, largeur_barriere)))
-
+        # on affiche une barrière de la taille de la fenêtre
+        pygame.draw.rect(screen, white, pygame.Rect(
+            x, y, t_fenetre[0], l_barrière))
+        y += l_barrière
     pygame.display.flip()  # maj de l'écran
 pygame.quit()  # Arrêt de Pygame
