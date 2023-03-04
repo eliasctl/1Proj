@@ -1,5 +1,6 @@
 # import des modules
 import pygame
+import time
 from fonctions import *
 
 
@@ -10,27 +11,15 @@ class Joueur:
         self.y = y
         self.couleur = couleur
 
-    def deplacer(self):
-        pass
-
-    def pose_une_barrière(self, x, y):
-        bariere_x = x
-        bariere_y = y
-
 
 # variables du jeux
-t_fenetre = (970, 970)
+t_fenetre = (700, 700)
 pygame.display.set_caption("Quoridor")
 nb_cases = 11
 nb_barrieres = nb_cases - 1
 t_cases = ((t_fenetre[0] // nb_cases) - nb_barrieres)
 l_barrière = (t_fenetre[0] - (nb_cases * t_cases)) // nb_barrieres
 hauteur_barriere = t_fenetre[0]
-
-# définition des couleurs
-white = (255, 255, 255)
-black = (0, 0, 0)
-gray = (128, 128, 128)
 
 
 # pour le jeux
@@ -40,37 +29,49 @@ joueur = Joueur(0, 0, (255, 0, 0))  # on crée un joueur
 
 
 # Boucle principale du jeu
-running = True
-while running:
-    # Traitement des événements
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+while True:
+    ev = pygame.event.poll()
+    if ev.type == pygame.KEYDOWN and ev.key == pygame.K_ESCAPE:
+        break
+    if ev.type == pygame.QUIT:
+        break
 
     x = 0
     y = 0
-    r = 0
 
     # affichage de la grille
-    for W in range(nb_cases):
-        for i in range(nb_cases - 1):  # boucle qui dessine une case et une barrière
+    for w in range(nb_cases):
+        # si on est a la premiere ou derniere ligne
+        if (w == 0 or w == nb_cases - 1):
+            colorCase = (0, 0, 205)
+        else:
+            colorCase = (65, 105, 225)
+
+        # boucle qui dessine une case et une barrière
+        for i in range(nb_cases - 1):
             # on affiche un carré
-            pygame.draw.rect(screen, gray, pygame.Rect(
+            pygame.draw.rect(screen, colorCase, pygame.Rect(
                 x, y, t_cases, t_cases))
             x += t_cases  # on decale la position x
             # on affiche une barrière
-            pygame.draw.rect(screen, white, pygame.Rect(
+            pygame.draw.rect(screen, (200, 200, 200), pygame.Rect(
                 x, y, l_barrière, t_cases))
             x += l_barrière  # on decale la position x
+
         # on affiche le dernier carré
-        pygame.draw.rect(screen, gray, pygame.Rect(
+        pygame.draw.rect(screen, colorCase, pygame.Rect(
             x, y, t_cases, t_cases))
         # on update x, y
         x = 0
         y += t_cases
-        # on affiche une barrière de la taille de la fenêtre
-        pygame.draw.rect(screen, white, pygame.Rect(
-            x, y, t_fenetre[0], l_barrière))
-        y += l_barrière
-    pygame.display.flip()  # maj de l'écran
-pygame.quit()  # Arrêt de Pygame
+
+        # si on est pas a la derniere ligne
+        if w != nb_cases - 1:
+            # on affiche une barrière de la taille de la fenêtre
+            pygame.draw.rect(screen, (200, 200, 200), pygame.Rect(
+                x, y, t_fenetre[0], l_barrière))
+            # update de la position y
+            y += l_barrière
+
+    pygame.display.flip()
+    time.sleep(0.1)
