@@ -1,42 +1,6 @@
 import pygame
 import time
 
-
-# on definis une classe pour les joueurs
-class Joueur:
-    def __init__(self, nom, nb_barriere, position_x, position_y):
-        self.nom = nom
-        self.nb_barriere = nb_barriere
-        self.position_x = position_x
-        self.position_y = position_y
-
-    def deplacement(self, direction):
-        if direction == "haut":
-            self.position_y -= 1
-        elif direction == "bas":
-            self.position_y += 1
-        elif direction == "gauche":
-            self.position_x -= 1
-        elif direction == "droite":
-            self.position_x += 1
-        else:
-            print("Erreur de direction")
-        return self.position_x, self.position_y
-
-    def pose_barriere(self, direction, position_x, position_y):
-        if direction == "haut":
-            position_y -= 1
-        elif direction == "bas":
-            position_y += 1
-        elif direction == "gauche":
-            position_x -= 1
-        elif direction == "droite":
-            position_x += 1
-        else:
-            print("Erreur de direction")
-        return position_x, position_y
-
-
 # Initialisation de Pygame
 pygame.init()
 
@@ -61,12 +25,13 @@ def cree_page_principale():
     return screen
 
 
-def creation_bouton(screen, x, y, hauteur, largeur, couleurBoutton, couleurText, text):
-    # Création d'un bouton complet
+# Création d'un bouton complet
+def creation_bouton(screen, x, y, hauteur, largeur, couleurBoutton, couleurText, text, ombre):
     # affichage ombre
-    button_rect = pygame.Rect(x+3, y+3, largeur, hauteur)
-    button_color = pygame.Color(ombre)
-    pygame.draw.rect(screen, button_color, button_rect)
+    if ombre:
+        button_rect = pygame.Rect(x+3, y+3, largeur, hauteur)
+        button_color = pygame.Color(ombre)
+        pygame.draw.rect(screen, button_color, button_rect)
 
     # Affichage du bouton
     button_rect = pygame.Rect(x, y, largeur, hauteur)
@@ -92,8 +57,10 @@ def afficher_menu_nb_joueur(fenetre):
     affiche_text(fenetre, 250, 200, blanc, "Choississez le nombre de joueurs")
 
     # boutons pour choisir le nombre de joueur
-    creation_bouton(fenetre, 100, 300, 200, 200, bleu, blanc, "2 joueurs")
-    creation_bouton(fenetre, 500, 300, 200, 200, bleu, blanc, "4 joueurs")
+    creation_bouton(fenetre, 100, 300, 200, 200,
+                    bleu, blanc, "2 joueurs", True)
+    creation_bouton(fenetre, 500, 300, 200, 200,
+                    bleu, blanc, "4 joueurs", True)
 
     pygame.display.flip()
 
@@ -125,10 +92,10 @@ def afficher_menu_taille_plateau(fenetre):
     affiche_text(fenetre, 250, 200, blanc, "Choississez la taille du plateau")
 
     # on dessine les 4 boutons
-    creation_bouton(fenetre, 100, 300, 100, 100, gris, blanc, "5 x 5")
-    creation_bouton(fenetre, 500, 300, 100, 100, gris, blanc, "7 x 7")
-    creation_bouton(fenetre, 100, 450, 100, 100, gris, blanc, "9 x 9")
-    creation_bouton(fenetre, 500, 450, 100, 100, gris, blanc, "11 x 11")
+    creation_bouton(fenetre, 100, 300, 100, 100, gris, blanc, "5 x 5", True)
+    creation_bouton(fenetre, 500, 300, 100, 100, gris, blanc, "7 x 7", True)
+    creation_bouton(fenetre, 100, 450, 100, 100, gris, blanc, "9 x 9", True)
+    creation_bouton(fenetre, 500, 450, 100, 100, gris, blanc, "11 x 11", True)
     time.sleep(1)
     pygame.display.flip()
 
@@ -150,6 +117,41 @@ def afficher_menu_taille_plateau(fenetre):
     return taille_plateau
 
 
+def affichage_plateau(fenetre, nb_joueur, taille_plateau):
+    # Clear fenetre
+    fenetre.fill(noir)
+
+    # Affichage des textes
+    affiche_text(fenetre, 250, 30, blanc, "A qui de jouer ?")
+    affiche_text(fenetre, 250, 50, blanc, "tableau")
+
+    Quadrillage_dx = 200
+    Quadrillage_dy = 100
+    Quadrillage_lX = 400
+    Quadrillage_ly = 400
+    Qpas_x = Quadrillage_lX / taille_plateau
+    Qpas_y = Quadrillage_ly / taille_plateau
+    Quad_mur = 5
+
+    # boutons pour choisir le nombre de joueur
+    for i in range(taille_plateau):
+        for j in range(taille_plateau):
+            creation_bouton(fenetre, Quadrillage_dx+Qpas_x*i,
+                            Quadrillage_dy+Qpas_y*j, Qpas_x-Quad_mur, Qpas_y-Quad_mur, bleu, bleu, "", False)
+
+    pygame.display.flip()
+
+    while True:
+        # test de sortie
+        ev = pygame.event.poll()
+        if ev.type == pygame.KEYDOWN and ev.key == pygame.K_ESCAPE:
+            pygame.quit()
+        if ev.type == pygame.QUIT:
+            pygame.quit()
+
+
+# Programme principal
+
 # initialisation graphiques
 fenetre_jeu = cree_page_principale()
 
@@ -162,12 +164,6 @@ taille_plateau = afficher_menu_taille_plateau(fenetre_jeu)
 print(taille_plateau)
 
 
-# initialisation des joueurs
-if nb_joueur == 2:
-    joueur1 = Joueur("Joueur 1", 10, int(taille_plateau/2), 1)
-    joueur2 = Joueur("Joueur 2", 10, int(taille_plateau/2), taille_plateau)
-else:
-    joueur1 = Joueur("Joueur 1", 5, int(taille_plateau/2), 1)
-    joueur2 = Joueur("Joueur 2", 5, taille_plateau, int(taille_plateau/2))
-    joueur3 = Joueur("Joueur 3", 5, int(taille_plateau/2), taille_plateau)
-    joueur4 = Joueur("Joueur 4", 5, 1, int(taille_plateau/2))
+# initialisation du plateau et des données
+
+affichage_plateau(fenetre_jeu, nb_joueur, taille_plateau)
