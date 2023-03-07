@@ -18,9 +18,13 @@ ombre = (50, 50, 50)
 nb_joueur = 0
 taille_plateau = 0
 
+
+# fonction qui renvoie les coordonées du clique de la souris
+def get_mouse_pos():
+    return pygame.mouse.get_pos()
+
+
 # classe joueur
-
-
 class Joueur:
     def __init__(self, x, y, couleur):
         self.x = x
@@ -31,14 +35,14 @@ class Joueur:
         pygame.draw.circle(fenetre, couleur, (x, y), rayon, 0)
 
 
+# fonction qui affiche la page principale
 def cree_page_principale():
-    # Création d'une surface pour la fenêtre principale
     screen = pygame.display.set_mode((800, 600))
     pygame.display.set_caption("Quoridor")  # titre de la fenetre
     return screen
 
 
-# Création d'un bouton complet
+# Création d'un bouton complet avec texte et ombre
 def creation_bouton(screen, x, y, hauteur, largeur, couleurBoutton, couleurText, text, PossedeUneOmbre):
     # affichage ombre
     if PossedeUneOmbre:
@@ -55,12 +59,14 @@ def creation_bouton(screen, x, y, hauteur, largeur, couleurBoutton, couleurText,
     screen.blit(button_text, button_rect.move(largeur/4, hauteur/2))
 
 
+# fonction qui affiche du texte
 def affiche_text(screen, x, y, couleurText, text):
     font = pygame.font.Font(None, 36)
     text = font.render(text, 1, couleurText)
     screen.blit(text, (x, y))
 
 
+# fonction qui affiche le menu du nombre de joueur
 def afficher_menu_nb_joueur(fenetre):
     # Clear fenetre
     fenetre.fill(noir)
@@ -172,22 +178,6 @@ def affichage_plateau(fenetre, nb_joueur, taille_plateau):
 
     pygame.display.flip()
 
-    # # gestion des clics
-    # action = False
-    # while action == False:
-    #     ev = pygame.event.poll()
-    #     # si on clique sur un des boutons
-    #     if pygame.mouse.get_pressed()[0]:
-    #         pos = pygame.mouse.get_pos()
-    #         if pos[0] > 200 and pos[0] < 250 and pos[1] > 510 and pos[1] < 660:
-    #             action = "deplacement"
-    #             print("deplacement")
-    #             pygame.quit()
-    #         if pos[0] > 450 and pos[0] < 500 and pos[1] > 510 and pos[1] < 660:
-    #             action = "mur"
-    #             print("mur")
-    #             pygame.quit()
-
     while True:
         # test de sortie
         ev = pygame.event.poll()
@@ -195,16 +185,6 @@ def affichage_plateau(fenetre, nb_joueur, taille_plateau):
             pygame.quit()
         if ev.type == pygame.QUIT:
             pygame.quit()
-        if pygame.mouse.get_pressed()[0]:
-            pos = pygame.mouse.get_pos()
-            if pos[0] > 200 and pos[0] < 250 and pos[1] > 510 and pos[1] < 660:
-                action = "deplacement"
-                print("deplacement")
-                pygame.quit()
-            if pos[0] > 450 and pos[0] < 500 and pos[1] > 510 and pos[1] < 660:
-                action = "mur"
-                print("mur")
-                pygame.quit()
 
 
 # Programme principal
