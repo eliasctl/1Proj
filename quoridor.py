@@ -8,14 +8,27 @@ pygame.init()
 noir = (0, 0, 0)
 blanc = (255, 255, 255)
 bleu = (0, 0, 255)
-vert = (0, 255, 0)
-rouge = (255, 0, 0)
+vert = (19, 143, 0)
+rouge = (143, 0, 0)
+violet = (84, 0, 201)
 gris = (150, 150, 150)
 ombre = (50, 50, 50)
 
 # variables du jeux
 nb_joueur = 0
 taille_plateau = 0
+
+# classe joueur
+
+
+class Joueur:
+    def __init__(self, x, y, couleur):
+        self.x = x
+        self.y = y
+        self.couleur = couleur
+
+    def affichage_joueur(self, fenetre, couleur, x, y, rayon):
+        pygame.draw.circle(fenetre, couleur, (x, y), rayon, 0)
 
 
 def cree_page_principale():
@@ -26,9 +39,9 @@ def cree_page_principale():
 
 
 # Création d'un bouton complet
-def creation_bouton(screen, x, y, hauteur, largeur, couleurBoutton, couleurText, text, ombre):
+def creation_bouton(screen, x, y, hauteur, largeur, couleurBoutton, couleurText, text, PossedeUneOmbre):
     # affichage ombre
-    if ombre:
+    if PossedeUneOmbre:
         button_rect = pygame.Rect(x+3, y+3, largeur, hauteur)
         button_color = pygame.Color(ombre)
         pygame.draw.rect(screen, button_color, button_rect)
@@ -125,21 +138,55 @@ def affichage_plateau(fenetre, nb_joueur, taille_plateau):
     affiche_text(fenetre, 250, 30, blanc, "A qui de jouer ?")
     affiche_text(fenetre, 250, 50, blanc, "tableau")
 
-    Quadrillage_dx = 200
-    Quadrillage_dy = 100
-    Quadrillage_lX = 400
-    Quadrillage_ly = 400
-    Qpas_x = Quadrillage_lX / taille_plateau
-    Qpas_y = Quadrillage_ly / taille_plateau
-    Quad_mur = 5
+    Quadrillage_dx = 200  # position X du coin haut gauche du quadrillage
+    Quadrillage_dy = 100  # position Y du coin haut gauche du quadrillage
+    Quadrillage_lX = 400  # longueur du quadrillage
+    Quadrillage_ly = 400  # hauteur du quadrillage
+    Qpas_x = Quadrillage_lX / taille_plateau  # pas du quadrillage en X
+    Qpas_y = Quadrillage_ly / taille_plateau  # pas du quadrillage en Y
+    Quad_mur = 5  # largeur des murs du quadrillage
 
     # boutons pour choisir le nombre de joueur
     for i in range(taille_plateau):
         for j in range(taille_plateau):
-            creation_bouton(fenetre, Quadrillage_dx+Qpas_x*i,
-                            Quadrillage_dy+Qpas_y*j, Qpas_x-Quad_mur, Qpas_y-Quad_mur, bleu, bleu, "", False)
+            creation_bouton(fenetre, Quadrillage_dx+Qpas_x*i, Quadrillage_dy +
+                            Qpas_y*j, Qpas_x-Quad_mur, Qpas_y-Quad_mur, gris, gris, "", False)
+
+    # affichage des boutons (pour le deplacement ou le placement de mur)
+    creation_bouton(fenetre, 200, 510, 50, 150,
+                    gris, blanc, "Se Deplacer", True)
+    creation_bouton(fenetre, 450, 510, 50, 150, gris,
+                    blanc, "Poser un mur", True)
+
+    # affichage des joueurs
+    player1.affichage_joueur(fenetre, player1.couleur, Quadrillage_dx+Qpas_x*(player1.x-0.5)-Quad_mur/2,
+                             Quadrillage_dy+Qpas_y*(player1.y-0.5)-Quad_mur/2, Qpas_x/3)
+    player2.affichage_joueur(fenetre, player2.couleur, Quadrillage_dx+Qpas_x*(player2.x-0.5)-Quad_mur/2,
+                             Quadrillage_dy+Qpas_y*(player2.y-0.5)-Quad_mur/2, Qpas_x/3)
+
+    if nb_joueur == 4:
+        player3.affichage_joueur(fenetre, player3.couleur, Quadrillage_dx+Qpas_x*(player3.x-0.5)-Quad_mur/2,
+                                 Quadrillage_dy+Qpas_y*(player3.y-0.5)-Quad_mur/2, Qpas_x/3)
+        player4.affichage_joueur(fenetre, player4.couleur, Quadrillage_dx+Qpas_x*(player4.x-0.5)-Quad_mur/2,
+                                 Quadrillage_dy+Qpas_y*(player4.y-0.5)-Quad_mur/2, Qpas_x/3)
 
     pygame.display.flip()
+
+    # # gestion des clics
+    # action = False
+    # while action == False:
+    #     ev = pygame.event.poll()
+    #     # si on clique sur un des boutons
+    #     if pygame.mouse.get_pressed()[0]:
+    #         pos = pygame.mouse.get_pos()
+    #         if pos[0] > 200 and pos[0] < 250 and pos[1] > 510 and pos[1] < 660:
+    #             action = "deplacement"
+    #             print("deplacement")
+    #             pygame.quit()
+    #         if pos[0] > 450 and pos[0] < 500 and pos[1] > 510 and pos[1] < 660:
+    #             action = "mur"
+    #             print("mur")
+    #             pygame.quit()
 
     while True:
         # test de sortie
@@ -148,10 +195,19 @@ def affichage_plateau(fenetre, nb_joueur, taille_plateau):
             pygame.quit()
         if ev.type == pygame.QUIT:
             pygame.quit()
+        if pygame.mouse.get_pressed()[0]:
+            pos = pygame.mouse.get_pos()
+            if pos[0] > 200 and pos[0] < 250 and pos[1] > 510 and pos[1] < 660:
+                action = "deplacement"
+                print("deplacement")
+                pygame.quit()
+            if pos[0] > 450 and pos[0] < 500 and pos[1] > 510 and pos[1] < 660:
+                action = "mur"
+                print("mur")
+                pygame.quit()
 
 
 # Programme principal
-
 # initialisation graphiques
 fenetre_jeu = cree_page_principale()
 
@@ -163,7 +219,14 @@ print(nb_joueur)
 taille_plateau = afficher_menu_taille_plateau(fenetre_jeu)
 print(taille_plateau)
 
+player1 = Joueur((taille_plateau+1)/2, 1, rouge)
+if nb_joueur == 2:
+    player2 = Joueur((taille_plateau+1)/2, taille_plateau, bleu)
+else:
+    player2 = Joueur(taille_plateau, (taille_plateau+1)/2, bleu)
+    player3 = Joueur((taille_plateau+1)/2, taille_plateau, violet)
+    player4 = Joueur(1, (taille_plateau+1)/2, vert)
+
 
 # initialisation du plateau et des données
-
 affichage_plateau(fenetre_jeu, nb_joueur, taille_plateau)
