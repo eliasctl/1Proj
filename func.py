@@ -132,9 +132,9 @@ def affichage_plateau(fenetre, nb_joueur, taille_plateau, player1, player2, play
     Quadrillage_dy = 100  # position Y du coin haut gauche du quadrillage
     Quadrillage_lX = 400  # longueur du quadrillage
     Quadrillage_ly = 400  # hauteur du quadrillage
+    Quad_mur = 5  # largeur des murs du quadrillage
     Qpas_x = Quadrillage_lX / taille_plateau  # pas du quadrillage en X
     Qpas_y = Quadrillage_ly / taille_plateau  # pas du quadrillage en Y
-    Quad_mur = 5  # largeur des murs du quadrillage
 
     # boutons pour choisir le nombre de joueur
     for i in range(taille_plateau):
@@ -162,10 +162,10 @@ def affichage_plateau(fenetre, nb_joueur, taille_plateau, player1, player2, play
 
     pygame.display.flip()
 
-    while True:
-        # test de sortie
-        ev = pygame.event.poll()
-        if ev.type == pygame.KEYDOWN and ev.key == pygame.K_ESCAPE:
-            pygame.quit()
-        if ev.type == pygame.QUIT:
-            pygame.quit()
+    # while True:
+    #     # test de sortie
+    #     ev = pygame.event.poll()
+    #     if ev.type == pygame.KEYDOWN and ev.key == pygame.K_ESCAPE:
+    #         pygame.quit()
+    #     if ev.type == pygame.QUIT:
+    #         pygame.quit()
