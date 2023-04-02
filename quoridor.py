@@ -114,13 +114,33 @@ class Joueur:
 
     def poser_murV(self, fenetre, tableauMurV, taille_plateau):
         # on affiche les milieux de murs possibles
-        for i in range(1, taille_plateau):
-            for j in range(1, taille_plateau):
+        for i in range(taille_plateau-1):
+            for j in range(taille_plateau-1):
                 if tableauMurV[i][j] == 0:
-                    pygame.draw.circle(fenetre, blanc, (Quadrillage_dx+Qpas_x*(i)-Quad_mur/2,
-                                                        Quadrillage_dy+Qpas_y*(j-0.5)-Quad_mur/2), 6, 0)
+                    pygame.draw.circle(fenetre, blanc, (Quadrillage_dx+Qpas_x*(i+1)-Quad_mur/2,
+                                                        Quadrillage_dy+Qpas_y*(j+1)-Quad_mur/2), 6, 0)
         pygame.display.flip()
-        pygame.time.wait(3000)
+
+        # on attend que le joueur clique sur un neoud de mur
+        mur_choisi = False
+        while mur_choisi == False:
+            ev = pygame.event.poll()
+            # si on clique
+            if pygame.mouse.get_pressed()[0]:
+                pos = pygame.mouse.get_pos()
+                if pos[0] > Quadrillage_dx and pos[0] < Quadrillage_dx+Quadrillage_lX and pos[1] > Quadrillage_dy and pos[1] < Quadrillage_dy+Quadrillage_ly:
+                    # on cherche la case ou le joueur a clique
+                    for i in range(taille_plateau-1):
+                        for j in range(taille_plateau-1):
+                            # print("test des valeurs de i et j : ", i, j)
+                            if tableauMurV[i][j] == 0:
+                                distance = (Quadrillage_dx+Qpas_x*(i+1)-Quad_mur/2-pos[0])**2+(
+                                    Quadrillage_dy+Qpas_y*(j+1)-Quad_mur/2-pos[1])**2
+                                if distance < 36:
+                                    print("poser murV")
+                                    tableauMurV[i][j] = self.couleur
+                                    mur_choisi = True
+                                    break
 
 
 # Programme principal
@@ -140,9 +160,9 @@ tableauMurH = initMurTabMur(taille_plateau)
 tableauMurV = initMurTabMur(taille_plateau)
 
 # debug
-afficheTableau(tableauMurH)
-print("\n")
-afficheTableau(tableauMurV)
+# afficheTableau(tableauMurH)
+# print("\n")
+# afficheTableau(tableauMurV)
 
 # init du pas graphique
 Qpas_x = Quadrillage_lX / taille_plateau

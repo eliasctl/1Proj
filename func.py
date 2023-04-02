@@ -176,10 +176,10 @@ def affichage_plateau(fenetre, nb_joueur, taille_plateau, joueur, joueur_actif):
 
 def initMurTabMur(taille_plateau):
     mur = []
-    for i in range(1, taille_plateau):
+    for i in range(taille_plateau-1):
         mur.append([])
-        for j in range(1, taille_plateau):
-            mur[i-1].append(0)
+        for j in range(taille_plateau-1):
+            mur[i].append(0)
     return mur
 
 
