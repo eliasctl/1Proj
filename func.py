@@ -129,7 +129,7 @@ def afficher_menu_taille_plateau(fenetre):
     return taille_plateau
 
 
-def affichage_plateau(fenetre, nb_joueur, taille_plateau, player1, player2, player3, player4):
+def affichage_plateau(fenetre, nb_joueur, taille_plateau, joueur, joueur_actif):
     # Clear fenetre
     fenetre.fill(noir)
 
@@ -138,8 +138,9 @@ def affichage_plateau(fenetre, nb_joueur, taille_plateau, player1, player2, play
     Qpas_y = Quadrillage_ly / taille_plateau
 
     # Affichage des textes
-    affiche_text(fenetre, 250, 30, blanc, "A qui de jouer ?")
-    affiche_text(fenetre, 250, 50, blanc, "tableau")
+    affiche_text(fenetre, 250, 30, joueur[joueur_actif].couleur,
+                 "Joueur en cours : Joueur "+str(joueur_actif+1))
+    # affiche_text(fenetre, 250, 50, blanc, "tableau")
 
     # boutons pour choisir le nombre de joueur
     for i in range(taille_plateau):
@@ -148,22 +149,26 @@ def affichage_plateau(fenetre, nb_joueur, taille_plateau, player1, player2, play
                             Qpas_y*j, Qpas_x-Quad_mur, Qpas_y-Quad_mur, gris, gris, "", False)
 
     # affichage des boutons (pour le deplacement ou le placement de mur)
-    creation_bouton(fenetre, 200, 510, 50, 150,
+    creation_bouton(fenetre, 400, 510, 50, 150,
                     gris, blanc, "Se Deplacer", True)
-    creation_bouton(fenetre, 450, 510, 50, 150, gris,
-                    blanc, "Poser un mur", True)
+
+    creation_bouton(fenetre, 615, 150, 50, 165, gris,
+                    blanc, "mur Vertical", True)
+    creation_bouton(fenetre, 615, 300, 50, 165, gris,
+                    blanc, "mur Horizontal", True)
+
     # print("Tableau affiché")
 
     # affichage des joueurs
-    player1.affichage_joueur(fenetre, player1.couleur,
-                             player1.x, player1.y)
-    player2.affichage_joueur(fenetre, player2.couleur,
-                             player2.x, player2.y)
+    joueur[0].affichage_joueur(fenetre, joueur[0].couleur,
+                               joueur[0].x, joueur[0].y)
+    joueur[1].affichage_joueur(fenetre, joueur[1].couleur,
+                               joueur[1].x, joueur[1].y)
     if nb_joueur == 4:
-        player3.affichage_joueur(
-            fenetre, player3.couleur, player3.x, player3.y)
-        player4.affichage_joueur(
-            fenetre, player4.couleur, player4.x, player4.y)
+        joueur[2].affichage_joueur(
+            fenetre, joueur[2].couleur, joueur[2].x, joueur[2].y)
+        joueur[3].affichage_joueur(
+            fenetre, joueur[3].couleur, joueur[3].x, joueur[3].y)
     # print("Joueurs affichés")
 
     pygame.display.flip()

@@ -4,10 +4,11 @@ from func import *
 
 # classe joueur
 class Joueur:
-    def __init__(self, x, y, couleur):
+    def __init__(self, x, y, couleur, nb_murs):
         self.x = x
         self.y = y
         self.couleur = couleur
+        self.nb_mur = nb_murs
 
     def affichage_joueur(self, fenetre, couleur, indx, indy):
         pygame.draw.circle(fenetre, couleur, (Quadrillage_dx+Qpas_x*(indx-0.5)-Quad_mur/2,
@@ -111,6 +112,16 @@ class Joueur:
                         self.y = indy
                         break
 
+    def poser_murV(self, fenetre, tableauMurV, taille_plateau):
+        # on affiche les milieux de murs possibles
+        for i in range(1, taille_plateau):
+            for j in range(1, taille_plateau):
+                if tableauMurV[i][j] == 0:
+                    pygame.draw.circle(fenetre, blanc, (Quadrillage_dx+Qpas_x*(i)-Quad_mur/2,
+                                                        Quadrillage_dy+Qpas_y*(j-0.5)-Quad_mur/2), 6, 0)
+        pygame.display.flip()
+        pygame.time.wait(3000)
+
 
 # Programme principal
 # initialisation graphiques
@@ -136,31 +147,30 @@ afficheTableau(tableauMurV)
 # init du pas graphique
 Qpas_x = Quadrillage_lX / taille_plateau
 Qpas_y = Quadrillage_ly / taille_plateau
-print(" init var graphique " + str(Qpas_x) + " " + str(Qpas_y))
 
 # creation des joueurs
 # on créé et rempli le tableau des joueurs
 joueurs = []
 
-joueurs.append(Joueur((taille_plateau+1)/2, 1, rouge))
 if nb_joueur == 2:
-    joueurs.append(Joueur((taille_plateau+1)/2, taille_plateau, bleu))
-    joueurs.append(Joueur(0, 0, 0))
-    joueurs.append(Joueur(0, 0, 0))
+    joueurs.append(Joueur((taille_plateau+1)/2, 1, rouge, 10))
+    joueurs.append(Joueur((taille_plateau+1)/2, taille_plateau, bleu, 10))
+    joueurs.append(Joueur(0, 0, 0, 0))
+    joueurs.append(Joueur(0, 0, 0, 0))
 else:
-    joueurs.append(Joueur(taille_plateau, (taille_plateau+1)/2, bleu))
-    joueurs.append(Joueur((taille_plateau+1)/2, taille_plateau, violet))
-    joueurs.append(Joueur(1, (taille_plateau+1)/2, vert))
+    joueurs.append(Joueur((taille_plateau+1)/2, 1, rouge, 5))
+    joueurs.append(Joueur(taille_plateau, (taille_plateau+1)/2, bleu, 5))
+    joueurs.append(Joueur((taille_plateau+1)/2, taille_plateau, violet, 5))
+    joueurs.append(Joueur(1, (taille_plateau+1)/2, vert, 5))
 
 
-parie_finie = False
-while not parie_finie:
+partie_finie = False
+while not partie_finie:
 
     for i in range(nb_joueur):
 
         # initialisation du plateau et des données
-        affichage_plateau(fenetre_jeu, nb_joueur, taille_plateau,
-                          joueurs[0], joueurs[1], joueurs[2], joueurs[3])
+        affichage_plateau(fenetre_jeu, nb_joueur, taille_plateau, joueurs, i)
 
         pygame.display.flip()
 
@@ -180,6 +190,12 @@ while not parie_finie:
                     joueurs[i].deplacer(fenetre_jeu, nb_joueur, taille_plateau)
                     pygame.display.flip()
                     break
+                # Position bouton mur 615, 150, 50, 165
+                if pos[0] > 615 and pos[0] < 780 and pos[1] > 150 and pos[1] < 200:
+                    joueurs[i].poser_murV(
+                        fenetre_jeu, tableauMurV, taille_plateau)
+                    pygame.display.flip()
+                    break
 
-    # pause 0.5 seconde
-    pygame.time.wait(500)
+    # pause 0.25 seconde
+    pygame.time.wait(250)
