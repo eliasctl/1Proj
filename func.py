@@ -152,7 +152,7 @@ def affichage_plateau(fenetre, nb_joueur, taille_plateau, player1, player2, play
                     gris, blanc, "Se Deplacer", True)
     creation_bouton(fenetre, 450, 510, 50, 150, gris,
                     blanc, "Poser un mur", True)
-    print("Tableau affiché")
+    # print("Tableau affiché")
 
     # affichage des joueurs
     player1.affichage_joueur(fenetre, player1.couleur,
@@ -164,6 +164,6 @@ def affichage_plateau(fenetre, nb_joueur, taille_plateau, player1, player2, play
             fenetre, player3.couleur, player3.x, player3.y)
         player4.affichage_joueur(
             fenetre, player4.couleur, player4.x, player4.y)
-    print("Joueurs affichés")
+    # print("Joueurs affichés")
 
     pygame.display.flip()
