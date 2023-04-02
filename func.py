@@ -18,6 +18,15 @@ ombre = (50, 50, 50)
 nb_joueur = 0
 taille_plateau = 0
 
+# variables graphiques
+Quadrillage_dx = 200  # position X du coin haut gauche du quadrillage
+Quadrillage_dy = 100  # position Y du coin haut gauche du quadrillage
+Quadrillage_lX = 400  # longueur du quadrillage
+Quadrillage_ly = 400  # hauteur du quadrillage
+Qpas_x = 1  # pas du quadrillage en X
+Qpas_y = 1  # pas du quadrillage en Y
+Quad_mur = 5  # largeur des murs du quadrillage
+
 
 # fonction qui affiche la page principale
 def cree_page_principale():
@@ -120,21 +129,17 @@ def afficher_menu_taille_plateau(fenetre):
     return taille_plateau
 
 
-def affichage_plateau(fenetre, nb_joueur, taille_plateau, player1, player2, player3=0, player4=0):
+def affichage_plateau(fenetre, nb_joueur, taille_plateau, player1, player2, player3, player4):
     # Clear fenetre
     fenetre.fill(noir)
+
+    # init du pas graphique
+    Qpas_x = Quadrillage_lX / taille_plateau
+    Qpas_y = Quadrillage_ly / taille_plateau
 
     # Affichage des textes
     affiche_text(fenetre, 250, 30, blanc, "A qui de jouer ?")
     affiche_text(fenetre, 250, 50, blanc, "tableau")
-
-    Quadrillage_dx = 200  # position X du coin haut gauche du quadrillage
-    Quadrillage_dy = 100  # position Y du coin haut gauche du quadrillage
-    Quadrillage_lX = 400  # longueur du quadrillage
-    Quadrillage_ly = 400  # hauteur du quadrillage
-    Qpas_x = Quadrillage_lX / taille_plateau  # pas du quadrillage en X
-    Qpas_y = Quadrillage_ly / taille_plateau  # pas du quadrillage en Y
-    Quad_mur = 5  # largeur des murs du quadrillage
 
     # boutons pour choisir le nombre de joueur
     for i in range(taille_plateau):
@@ -147,25 +152,18 @@ def affichage_plateau(fenetre, nb_joueur, taille_plateau, player1, player2, play
                     gris, blanc, "Se Deplacer", True)
     creation_bouton(fenetre, 450, 510, 50, 150, gris,
                     blanc, "Poser un mur", True)
+    print("Tableau affiché")
 
     # affichage des joueurs
-    player1.affichage_joueur(fenetre, player1.couleur, Quadrillage_dx+Qpas_x*(player1.x-0.5)-Quad_mur/2,
-                             Quadrillage_dy+Qpas_y*(player1.y-0.5)-Quad_mur/2, Qpas_x/3)
-    player2.affichage_joueur(fenetre, player2.couleur, Quadrillage_dx+Qpas_x*(player2.x-0.5)-Quad_mur/2,
-                             Quadrillage_dy+Qpas_y*(player2.y-0.5)-Quad_mur/2, Qpas_x/3)
-
+    player1.affichage_joueur(fenetre, player1.couleur,
+                             player1.x, player1.y)
+    player2.affichage_joueur(fenetre, player2.couleur,
+                             player2.x, player2.y)
     if nb_joueur == 4:
-        player3.affichage_joueur(fenetre, player3.couleur, Quadrillage_dx+Qpas_x*(player3.x-0.5)-Quad_mur/2,
-                                 Quadrillage_dy+Qpas_y*(player3.y-0.5)-Quad_mur/2, Qpas_x/3)
-        player4.affichage_joueur(fenetre, player4.couleur, Quadrillage_dx+Qpas_x*(player4.x-0.5)-Quad_mur/2,
-                                 Quadrillage_dy+Qpas_y*(player4.y-0.5)-Quad_mur/2, Qpas_x/3)
+        player3.affichage_joueur(
+            fenetre, player3.couleur, player3.x, player3.y)
+        player4.affichage_joueur(
+            fenetre, player4.couleur, player4.x, player4.y)
+    print("Joueurs affichés")
 
     pygame.display.flip()
-
-    while True:
-        # test de sortie
-        ev = pygame.event.poll()
-        if ev.type == pygame.KEYDOWN and ev.key == pygame.K_ESCAPE:
-            pygame.quit()
-        if ev.type == pygame.QUIT:
-            pygame.quit()
