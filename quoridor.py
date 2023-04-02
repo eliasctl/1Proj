@@ -64,6 +64,15 @@ print(nb_joueur)
 taille_plateau = afficher_menu_taille_plateau(fenetre_jeu)
 print(taille_plateau)
 
+# initialisation des tableaux de mur
+tableauMurH = initMurTabMur(taille_plateau)
+tableauMurV = initMurTabMur(taille_plateau)
+
+# debug
+afficheTableau(tableauMurH)
+print("\n")
+afficheTableau(tableauMurV)
+
 # init du pas graphique
 Qpas_x = Quadrillage_lX / taille_plateau
 Qpas_y = Quadrillage_ly / taille_plateau
