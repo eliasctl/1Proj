@@ -171,13 +171,23 @@ def affichage_plateau(fenetre, nb_joueur, taille_plateau, player1, player2, play
 
 def initMurTabMur(taille_plateau):
     mur = []
-    for i in range(taille_plateau-1):
+    for i in range(1, taille_plateau):
         mur.append([])
-        for j in range(taille_plateau-1):
-            mur[i].append(0)
+        for j in range(1, taille_plateau):
+            mur[i-1].append(0)
     return mur
 
 
 def afficheTableau(tableau):
     for ligne in tableau:
         print(ligne)
+
+
+def gameIsOver(nb_joueur, player1, player2, player3, player4):
+    if nb_joueur == 2:
+        if player1.y == taille_plateau or player2.y == 1:
+            return True
+    if nb_joueur == 4:
+        if player1.y == taille_plateau or player2.x == 1 or player3.y == 1 or player4.x == taille_plateau:
+            return True
+    return False
