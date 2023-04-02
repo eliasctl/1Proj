@@ -167,3 +167,17 @@ def affichage_plateau(fenetre, nb_joueur, taille_plateau, player1, player2, play
     # print("Joueurs affichés")
 
     pygame.display.flip()
+
+
+def initMurTabMur(taille_plateau):
+    mur = []
+    for i in range(taille_plateau-1):
+        mur.append([])
+        for j in range(taille_plateau-1):
+            mur[i].append(0)
+    return mur
+
+
+def afficheTableau(tableau):
+    for ligne in tableau:
+        print(ligne)
