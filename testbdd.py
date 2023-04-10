@@ -1,13 +1,18 @@
 import mysql.connector
 
 mydb = mysql.connector.connect(
-    host="eliascastel.ddns.net",
-    port="3306",
-    user="root",
-    password="@RootRoot1212",
-    database="test"
+   host="eliascastel.ddns.net",
+   user="pi",
+   password="@root123",
+   database="test"
 )
 
-mycursor = mydb.cursor()
-
-mycursor.execute("SELECT * FROM perso")
+#requete = "select * from perso"
+#
+#with mysql.connector.connect(**mydb) as db :
+#   with db.cursor() as c:
+#       c.execute(requete)
+#       resultats = c.fetchall()
+#       for utilisateur in resultats:
+#           print(utilisateur)
+            

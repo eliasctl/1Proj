@@ -46,8 +46,7 @@ def creation_bouton(screen, x, y, hauteur, largeur, couleurBoutton, couleurText,
     # Affichage du bouton
     button_rect = pygame.Rect(x, y, largeur, hauteur)
     button_color = pygame.Color(couleurBoutton)
-    button_text = pygame.font.SysFont(None, 24).render(
-        text, True, pygame.Color(couleurText))
+    button_text = pygame.font.SysFont(None, 24).render(text, True, pygame.Color(couleurText))
     pygame.draw.rect(screen, button_color, button_rect)
     screen.blit(button_text, button_rect.move(largeur/4, hauteur/2))
 
