@@ -94,7 +94,7 @@ def afficher_menu_nb_joueur(fenetre):
 
     return nb_joueur
 
-
+# fonction qui affiche le menu de la taille du plateau
 def afficher_menu_taille_plateau(fenetre):
     # Clear fenetre
     fenetre.fill(noir)
@@ -128,7 +128,7 @@ def afficher_menu_taille_plateau(fenetre):
     # pygame.quit()
     return taille_plateau
 
-
+# fonction qui affiche le plateau de jeu
 def affichage_plateau(fenetre, nb_joueur, taille_plateau, joueur, joueur_actif):
     # Clear fenetre
     fenetre.fill(noir)
@@ -173,7 +173,7 @@ def affichage_plateau(fenetre, nb_joueur, taille_plateau, joueur, joueur_actif):
 
     pygame.display.flip()
 
-
+#Creation d'un tableau de mur
 def initMurTabMur(taille_plateau):
     mur = []
     for i in range(taille_plateau-1):
@@ -182,12 +182,12 @@ def initMurTabMur(taille_plateau):
             mur[i].append(0)
     return mur
 
-
+# fonction qui affiche un tableau
 def afficheTableau(tableau):
     for ligne in tableau:
         print(ligne)
 
-
+# fonction qui termine la partie si un joueur a gagné
 def gameIsOver(nb_joueur, player1, player2, player3, player4):
     if nb_joueur == 2:
         if player1.y == taille_plateau or player2.y == 1:
