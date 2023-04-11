@@ -205,8 +205,8 @@ while not partie_finie:
             if pygame.mouse.get_pressed()[0]:
                 pos = pygame.mouse.get_pos()
                 # print("pos = " + str(pos))
-                # Position bouton deplacement 200, 510, 50, 150
-                if pos[0] > 200 and pos[0] < 350 and pos[1] > 510 and pos[1] < 660:
+                # Position bouton deplacement 400, 510, 50, 150,
+                if pos[0] > 400 and pos[0] < 550 and pos[1] > 510 and pos[1] < 660:
                     joueurs[i].deplacer(fenetre_jeu, nb_joueur, taille_plateau)
                     pygame.display.flip()
                     break
