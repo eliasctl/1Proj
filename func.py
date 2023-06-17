@@ -200,3 +200,18 @@ def initMurTabMur(taille_plateau):
 def afficheTableau(tableau):
     for ligne in tableau:
         print(ligne)
+
+#Fonction de vérification de victoire
+def victoire(x, y, taille_plateau, couleur):
+    if couleur==rouge :
+        if y==5:
+            return True
+    if couleur==bleu :
+        if x==0:
+            return True
+    if couleur==violet :
+        if y==0:
+            return True
+    if couleur==vert :
+        if x==5:
+            return True

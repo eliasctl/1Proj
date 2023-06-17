@@ -151,7 +151,6 @@ class Joueur:
                             self.affichage_joueur(
                                 fenetre, blanc, self.x, self.y+2)
                             deplace_possible.append((self.x, self.y+2))
-
         pygame.display.flip()
 
         # on attend que le joueur clique sur une case
@@ -169,6 +168,10 @@ class Joueur:
                         # on deplace le joueur
                         self.x = indx
                         self.y = indy
+
+                        # IMPORT DE LA CONDITION DE VICTOIRE
+                        if victoire(self.x, self.y, taille_plateau, self.couleur)==True:
+                            print("Victoire du joueur : ", self.couleur)
                         break
 
     def poser_murV(self, fenetre, tableauMurV, taille_plateau):
@@ -303,7 +306,6 @@ while not partie_finie:
         # initialisation du plateau et des données
         affichage_plateau(fenetre_jeu, nb_joueur, taille_plateau,
                           joueurs, i, tableauMurH, tableauMurV)
-
         pygame.display.flip()
 
         while True:
