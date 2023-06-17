@@ -15,83 +15,142 @@ class Joueur:
                                               Quadrillage_dy+Qpas_y*(indy-0.5)-Quad_mur/2), Qpas_x/3, 0)
 
     def deplacer(self, fenetre, nb_joueur, taille_plateau):
-        # on créé un tableau de tuples
-        # chaque tuple contient les coordonnées d'une case ou le joueur peut se deplacer
         deplace_possible = []
 
-        # on affiche les cercles sur les cases ou le joueur peut se deplacer
-        if self.x > 1:
-            # on vérifie qu'il n'y a pas de joueur sur la case
-            presence_joueur = False
-            for i in range(nb_joueur):
-                if self.x-1 == joueurs[i].x and self.y == joueurs[i].y:
-                    presence_joueur = True
-            if presence_joueur == False:
-                self.affichage_joueur(fenetre, blanc, self.x-1, self.y)
-                # on ajoute les coordonnées de la case dans le tableau
-                deplace_possible.append((self.x-1, self.y))
-            elif self.x > 2:
-                presence_joueur_case2 = False
-                for j in range(nb_joueur):
-                    if self.x-2 == joueurs[j].x and self.y == joueurs[j].y:
-                        presence_joueur_case2 = True
-                if presence_joueur_case2 == False:
-                    self.affichage_joueur(fenetre, blanc, self.x-2, self.y)
-                    deplace_possible.append((self.x-2, self.y))
+        # on check les murs
+        if self.x > 1:  # si le joueur n'est pas sur la premiere colonne mouv vers le gauche
+            presence_mur = False
+            if self.y > 1:
+                # print("valeur X = " + str(self.x) + " Valeur Y=" + str(self.y))
+                if tableauMurV[int(self.x-2)][int(self.y-2)] != 0:
+                    presence_mur = True
+            if self.y < taille_plateau:
+                if tableauMurV[int(self.x-2)][int(self.y-1)] != 0:
+                    presence_mur = True
 
-        if self.x < taille_plateau:
-            presence_joueur = False
-            for i in range(nb_joueur):
-                if self.x+1 == joueurs[i].x and self.y == joueurs[i].y:
-                    presence_joueur = True
-            if presence_joueur == False:
-                self.affichage_joueur(fenetre, blanc, self.x+1, self.y)
-                deplace_possible.append((self.x+1, self.y))
-            elif self.x+2 < taille_plateau:
-                presence_joueur_case2 = False
+            # on check les joueurs
+            if not presence_mur:
+                presence_joueur = False
                 for i in range(nb_joueur):
-                    if self.x+2 == joueurs[i].x and self.y == joueurs[i].y:
-                        presence_joueur_case2 = True
-                if presence_joueur_case2 == False:
-                    self.affichage_joueur(
-                        fenetre, blanc, self.x+2, self.y)
-                    deplace_possible.append((self.x+2, self.y))
+                    if self.x-1 == joueurs[i].x and self.y == joueurs[i].y:
+                        presence_joueur = True
 
-        if self.y > 1:
-            presence_joueur = False
-            for i in range(nb_joueur):
-                if self.x == joueurs[i].x and self.y-1 == joueurs[i].y:
-                    presence_joueur = True
-            if presence_joueur == False:
-                self.affichage_joueur(fenetre, blanc, self.x, self.y-1)
-                deplace_possible.append((self.x, self.y-1))
-            elif self.y-2 > 0:
-                presence_joueur_case2 = False
-                for i in range(nb_joueur):
-                    if self.x == joueurs[i].x and self.y-2 == joueurs[i].y:
-                        presence_joueur_case2 = True
-                if presence_joueur_case2 == False:
-                    self.affichage_joueur(
-                        fenetre, blanc, self.x, self.y-2)
-                    deplace_possible.append((self.x, self.y-2))
+                if not presence_joueur:
+                    if tableauMurV[int(self.x-2)][int(self.y-1)] == 0:
+                        self.affichage_joueur(fenetre, blanc, self.x-1, self.y)
+                        deplace_possible.append((self.x-1, self.y))
+                elif self.x > 2:
+                    presence_mur_case2 = False
+                    if tableauMurV[int(self.x-2)][int(self.y)] == 0 and tableauMurV[int(self.x-2)][int(self.y-1)] == 0:
+                        presence_mur_case2 = True
 
-        if self.y < taille_plateau:
-            presence_joueur = False
-            for i in range(nb_joueur):
-                if self.x == joueurs[i].x and self.y+1 == joueurs[i].y:
-                    presence_joueur = True
-            if presence_joueur == False:
-                self.affichage_joueur(fenetre, blanc, self.x, self.y+1)
-                deplace_possible.append((self.x, self.y+1))
-            elif self.y+2 < taille_plateau:
-                presence_joueur_case2 = False
+                    if not presence_mur_case2:
+                        presence_joueur_case2 = False
+                        for j in range(nb_joueur):
+                            if self.x-2 == joueurs[j].x and self.y == joueurs[j].y:
+                                presence_joueur_case2 = True
+                        if presence_joueur_case2 == False:
+                            self.affichage_joueur(
+                                fenetre, blanc, self.x-2, self.y)
+                            deplace_possible.append((self.x-2, self.y))
+
+        if self.x < taille_plateau:  # si le joueur n'est pas sur la derniere colonne mouv vers le la droite
+            presence_mur = False
+            if self.y > 1:
+                if tableauMurV[int(self.x-1)][int(self.y-2)] != 0:
+                    presence_mur = True
+            if self.y < taille_plateau:
+                if tableauMurV[int(self.x-1)][int(self.y-1)] != 0:
+                    presence_mur = True
+
+            if not presence_mur:
+                presence_joueur = False
                 for i in range(nb_joueur):
-                    if self.x == joueurs[i].x and self.y+2 == joueurs[i].y:
-                        presence_joueur_case2 = True
-                if presence_joueur_case2 == False:
-                    self.affichage_joueur(
-                        fenetre, blanc, self.x, self.y+2)
-                    deplace_possible.append((self.x, self.y+2))
+                    if self.x+1 == joueurs[i].x and self.y == joueurs[i].y:
+                        presence_joueur = True
+                if not presence_joueur:
+                    if tableauMurV[int(self.x-1)][int(self.y-1)] == 0:
+                        self.affichage_joueur(fenetre, blanc, self.x+1, self.y)
+                        deplace_possible.append((self.x+1, self.y))
+                elif self.x+2 < taille_plateau:
+                    presence_mur_case2 = False
+                    if tableauMurV[int(self.x+1)][int(self.y)] == 0 and tableauMurV[int(self.x+1)][int(self.y-1)] == 0:
+                        presence_mur_case2 = True
+
+                    if not presence_mur_case2:
+                        presence_joueur_case2 = False
+                        for i in range(nb_joueur):
+                            if self.x+2 == joueurs[i].x and self.y == joueurs[i].y:
+                                presence_joueur_case2 = True
+                        if presence_joueur_case2 == False:
+                            self.affichage_joueur(
+                                fenetre, blanc, self.x+2, self.y)
+                            deplace_possible.append((self.x+2, self.y))
+
+        if self.y > 1:  # verifie que le joueur n'est pas sur la premiere colonne pour dep vers haut
+            presence_mur = False
+            if self.x > 1:
+                if tableauMurH[int(self.x-2)][int(self.y-2)] != 0:
+                    presence_mur = True
+            if self.x < taille_plateau:
+                if tableauMurH[int(self.x-1)][int(self.y-2)] != 0:
+                    presence_mur = True
+
+            if not presence_mur:
+                presence_joueur = False
+                for i in range(nb_joueur):
+                    if self.x == joueurs[i].x and self.y-1 == joueurs[i].y:
+                        presence_joueur = True
+                if not presence_joueur:
+                    self.affichage_joueur(fenetre, blanc, self.x, self.y-1)
+                    deplace_possible.append((self.x, self.y-1))
+                elif self.y-2 > 0:
+                    presence_mur_case2 = False
+                    if tableauMurV[int(self.x)][int(self.y-2)] == 0 and tableauMurV[int(self.x-1)][int(self.y-2)] == 0:
+                        presence_mur_case2 = True
+
+                    if not presence_mur_case2:
+                        presence_joueur_case2 = False
+                        for i in range(nb_joueur):
+                            if self.x == joueurs[i].x and self.y-2 == joueurs[i].y:
+                                presence_joueur_case2 = True
+                        if presence_joueur_case2 == False:
+                            self.affichage_joueur(
+                                fenetre, blanc, self.x, self.y-2)
+                            deplace_possible.append((self.x, self.y-2))
+
+        if self.y < taille_plateau:  # verifie que le joueur n'est pas sur la derniere colonne pour dep vers bas
+            presence_mur = False
+            if self.x > 1:
+                if tableauMurH[int(self.x-2)][int(self.y-1)] != 0:
+                    presence_mur = True
+            if self.x < taille_plateau:
+                if tableauMurH[int(self.x-1)][int(self.y-1)] != 0:
+                    presence_mur = True
+
+            if not presence_mur:
+                presence_joueur = False
+                for i in range(nb_joueur):
+                    if self.x == joueurs[i].x and self.y+1 == joueurs[i].y:
+                        presence_joueur = True
+                if not presence_joueur:
+                    if tableauMurH[int(self.x-1)][int(self.y-1)] == 0:
+                        self.affichage_joueur(fenetre, blanc, self.x, self.y+1)
+                        deplace_possible.append((self.x, self.y+1))
+                elif self.y+2 < taille_plateau:
+                    presence_mur_case2 = False
+                    if tableauMurV[int(self.x)][int(self.y+1)] == 0 and tableauMurV[int(self.x-1)][int(self.y+1)] == 0:
+                        presence_mur_case2 = True
+
+                    if not presence_mur_case2:
+                        presence_joueur_case2 = False
+                        for i in range(nb_joueur):
+                            if self.x == joueurs[i].x and self.y+2 == joueurs[i].y:
+                                presence_joueur_case2 = True
+                        if presence_joueur_case2 == False:
+                            self.affichage_joueur(
+                                fenetre, blanc, self.x, self.y+2)
+                            deplace_possible.append((self.x, self.y+2))
 
         pygame.display.flip()
 
