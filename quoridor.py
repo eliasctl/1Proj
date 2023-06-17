@@ -172,6 +172,7 @@ class Joueur:
                         # IMPORT DE LA CONDITION DE VICTOIRE
                         if victoire(self.x, self.y, taille_plateau, self.couleur)==True:
                             print("Victoire du joueur : ", self.couleur)
+                            partie_finie=True
                         break
 
     def poser_murV(self, fenetre, tableauMurV, taille_plateau):
@@ -339,6 +340,8 @@ while not partie_finie:
                         fenetre_jeu, tableauMurH, taille_plateau)
                     pygame.display.flip()
                     break
+        if partie_finie :
+            break
 
     # pause 0.1s
     pygame.time.wait(100)
