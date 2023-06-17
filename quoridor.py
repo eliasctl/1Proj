@@ -120,7 +120,7 @@ class Joueur:
         # on affiche les milieux de murs possibles
         for i in range(taille_plateau-1):
             for j in range(taille_plateau-1):
-                if tableauMurV[i][j] == 0:  # si le mur n'est pas déjà posé
+                if tableauMurV[i][j] == 0 and tableauMurH[i][j] == 0:
                     if j > 0:  # si on est pas sur la premiere ligne
                         if j < taille_plateau-2:  # si on est pas sur la derniere ligne
                             # si il n'y a pas de mur au dessus et en dessous
@@ -148,7 +148,7 @@ class Joueur:
                     # on cherche la case ou le joueur a clique
                     for i in range(taille_plateau-1):
                         for j in range(taille_plateau-1):
-                            if tableauMurV[i][j] == 0 and mur_possible[i][j] == True:
+                            if tableauMurV[i][j] == 0 and tableauMurH[i][j] == 0 and mur_possible[i][j] == True:
                                 distance = (Quadrillage_dx+Qpas_x*(i+1)-Quad_mur/2-pos[0])**2+(
                                     Quadrillage_dy+Qpas_y*(j+1)-Quad_mur/2-pos[1])**2
                                 if distance < 36:
