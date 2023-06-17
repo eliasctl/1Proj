@@ -46,7 +46,7 @@ def creation_bouton(screen, x, y, hauteur, largeur, couleurBoutton, couleurText,
     # Affichage du bouton
     button_rect = pygame.Rect(x, y, largeur, hauteur)
     button_color = pygame.Color(couleurBoutton)
-    button_text = pygame.font.SysFont(None, 24).render(
+    button_text = pygame.font.SysFont(None, 23).render(
         text, True, pygame.Color(couleurText))
     pygame.draw.rect(screen, button_color, button_rect)
     screen.blit(button_text, button_rect.move(largeur/4, hauteur/2))
@@ -68,11 +68,10 @@ def afficher_menu_nb_joueur(fenetre):
     affiche_text(fenetre, 250, 100, blanc, "Bienvenue sur Quoridor")
     affiche_text(fenetre, 250, 200, blanc, "Choississez le nombre de joueurs")
 
+
     # boutons pour choisir le nombre de joueur
-    creation_bouton(fenetre, 100, 300, 200, 200,
-                    bleu, blanc, "2 joueurs", True)
-    creation_bouton(fenetre, 500, 300, 200, 200,
-                    bleu, blanc, "4 joueurs", True)
+    creation_bouton(fenetre, 100, 300, 200, 200, bleu, blanc, "2 joueurs", True)
+    creation_bouton(fenetre, 500, 300, 200, 200, bleu, blanc, "4 joueurs", True)
 
     pygame.display.flip()
 
@@ -104,6 +103,8 @@ def afficher_menu_taille_plateau(fenetre):
     affiche_text(fenetre, 250, 100, blanc, "Bienvenue sur Quoridor")
     affiche_text(fenetre, 250, 200, blanc, "Choississez la taille du plateau")
 
+
+
     # on dessine les 4 boutons
     creation_bouton(fenetre, 100, 300, 100, 100, gris, blanc, "5 x 5", True)
     creation_bouton(fenetre, 500, 300, 100, 100, gris, blanc, "7 x 7", True)
@@ -128,6 +129,106 @@ def afficher_menu_taille_plateau(fenetre):
                 taille_plateau = 11
     # pygame.quit()
     return taille_plateau
+
+# Fonction qui affiche la confirmation de choix
+def afficher_confirmation_choix(fenetre, nb_joueur, taille_plateau, mode_jeu):
+    fenetre.fill(noir)
+    affiche_text(fenetre, 250, 50, blanc, "Confirmation de vos choix : ")
+    affiche_text(fenetre, 15, 150, blanc, "Nombre de joueurs : " + str(nb_joueur))
+    affiche_text(fenetre, 15, 300, blanc, "Taille du plateau : " + str(taille_plateau) + " x " + str(taille_plateau))
+    affiche_text(fenetre, 15, 425, blanc, "Mode de jeu : " + str(mode_jeu))
+    creation_bouton(fenetre, 250, 500, 100, 100, gris, blanc, "Valider", True)
+    creation_bouton(fenetre, 400, 500, 100, 100, gris, blanc, "Retour", True)
+    pygame.display.flip()
+
+    choix_fait = 0
+    while choix_fait == 0:
+        ev = pygame.event.poll()
+        # si on clique sur un bouton
+        if pygame.mouse.get_pressed()[0]:
+            pos = pygame.mouse.get_pos()
+            if pos[0] > 250 and pos[0] < 350 and pos[1] > 500 and pos[1] < 600:
+                choix_fait = True
+            if pos[0] > 400 and pos[0] < 500 and pos[1] > 500 and pos[1] < 600:
+                choix_fait = False
+    
+    return choix_fait
+
+
+# Fonction qui affiche les choix pour le mode de jeu et retourne les choix sous forme de liste
+def afficher_menu_jeu(fenetre):
+    # Création de la liste des choix
+    liste_choix = []
+
+    # Clear fenetre & affichage Bienvenue
+    fenetre.fill(noir)
+    affiche_text(fenetre, 250, 50, blanc, "Bienvenue sur Quoridor")
+
+    # Menu Choix Joueurs
+    affiche_text(fenetre, 15, 150, blanc, "Choississez le nombre de joueurs : ")
+    creation_bouton(fenetre, 470, 105, 100, 100, gris, blanc, "2 joueurs", True)
+    creation_bouton(fenetre, 600, 105, 100, 100, gris, blanc, "4 joueurs", True)
+
+    # Menu Choix Taille Plateau
+    affiche_text(fenetre, 15, 300, blanc, "Choississez la taille du plateau : ")
+    creation_bouton(fenetre, 400, 250, 90, 90, gris, blanc, "5 x 5", True)
+    creation_bouton(fenetre, 500, 250, 90, 90, gris, blanc, "7 x 7", True)
+    creation_bouton(fenetre, 600, 250, 90, 90, gris, blanc, "9 x 9", True)
+    creation_bouton(fenetre, 700, 250, 90, 90, gris, blanc, "11 x 11", True)
+
+    # Menu Choix Mode de Jeu
+    affiche_text(fenetre, 15, 425, blanc, "Choississez le mode de jeu : ")
+    creation_bouton(fenetre, 400, 375, 100, 115, gris, blanc, "Vs Humain", True)
+    creation_bouton(fenetre, 600, 375, 100, 115, gris, blanc, "Vs Bot (2J)", True)
+
+    creation_bouton(fenetre, 350, 500, 80, 200, vert, blanc, "Lancer la partie", True)
+
+    # Afficher l'écran
+    pygame.display.flip()
+
+    
+
+    fin = 0
+    taille_plateau = 0
+    nb_joueur = 0
+    mode_jeu = 0
+    while fin == 0:
+        ev = pygame.event.poll()
+        # si on clique sur un bouton
+        if pygame.mouse.get_pressed()[0]:
+            pos = pygame.mouse.get_pos()
+            if pos[0] > 400 and pos[0] < 490 and pos[1] > 250 and pos[1] < 540:
+                taille_plateau = 5
+            if pos[0] > 500 and pos[0] < 590 and pos[1] > 250 and pos[1] < 540:
+                taille_plateau = 7
+            if pos[0] > 600 and pos[0] < 690 and pos[1] > 250 and pos[1] < 540:
+                taille_plateau = 9
+            if pos[0] > 700 and pos[0] < 790 and pos[1] > 250 and pos[1] < 540:
+                taille_plateau = 11
+            
+            if pos[0] > 470 and pos[0] < 570 and pos[1] > 105 and pos[1] < 205:
+                nb_joueur = 2
+            if pos[0] > 600 and pos[0] < 700 and pos[1] > 105 and pos[1] < 205:
+                nb_joueur = 4
+            
+            if pos[0] > 400 and pos[0] < 500 and pos[1] > 375 and pos[1] < 490:
+                mode_jeu = 1
+            if pos[0] > 600 and pos[0] < 700 and pos[1] > 375 and pos[1] < 490:
+                mode_jeu = 2
+
+            if pos[0] > 350 and pos[0] < 430 and pos[1] > 500 and pos[1] < 700:
+                if taille_plateau != 0 and nb_joueur != 0 and mode_jeu != 0:
+                    fin = 1
+    # pygame.quit()
+    liste_choix.append(nb_joueur)
+    liste_choix.append(taille_plateau)
+    liste_choix.append(mode_jeu)
+
+    conf_choix = afficher_confirmation_choix(fenetre, nb_joueur, taille_plateau, mode_jeu)
+    if conf_choix == True:
+        return liste_choix
+    else:
+        afficher_menu_jeu(fenetre)
 
 
 # fonction qui affiche le plateau de jeu
