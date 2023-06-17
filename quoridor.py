@@ -1,6 +1,13 @@
 import pygame
 from func import *
+from pygame import mixer
 
+
+# mettre en place la musique
+mixer.init()
+mixer.music.load('Bloons TD battles music Monkeys and Bloons!.mp3')
+mixer.music.set_volume(1)
+mixer.music.play(-1)
 
 # classe joueur
 class Joueur:
@@ -345,3 +352,7 @@ while not partie_finie:
 
     # pause 0.1s
     pygame.time.wait(100)
+
+
+
+
