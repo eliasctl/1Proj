@@ -46,7 +46,8 @@ def creation_bouton(screen, x, y, hauteur, largeur, couleurBoutton, couleurText,
     # Affichage du bouton
     button_rect = pygame.Rect(x, y, largeur, hauteur)
     button_color = pygame.Color(couleurBoutton)
-    button_text = pygame.font.SysFont(None, 24).render(text, True, pygame.Color(couleurText))
+    button_text = pygame.font.SysFont(None, 24).render(
+        text, True, pygame.Color(couleurText))
     pygame.draw.rect(screen, button_color, button_rect)
     screen.blit(button_text, button_rect.move(largeur/4, hauteur/2))
 
@@ -93,6 +94,7 @@ def afficher_menu_nb_joueur(fenetre):
 
     return nb_joueur
 
+
 # fonction qui affiche le menu de la taille du plateau
 def afficher_menu_taille_plateau(fenetre):
     # Clear fenetre
@@ -107,7 +109,7 @@ def afficher_menu_taille_plateau(fenetre):
     creation_bouton(fenetre, 500, 300, 100, 100, gris, blanc, "7 x 7", True)
     creation_bouton(fenetre, 100, 450, 100, 100, gris, blanc, "9 x 9", True)
     creation_bouton(fenetre, 500, 450, 100, 100, gris, blanc, "11 x 11", True)
-    time.sleep(1)
+    time.sleep(0.1)
     pygame.display.flip()
 
     taille_plateau = 0
@@ -127,8 +129,9 @@ def afficher_menu_taille_plateau(fenetre):
     # pygame.quit()
     return taille_plateau
 
+
 # fonction qui affiche le plateau de jeu
-def affichage_plateau(fenetre, nb_joueur, taille_plateau, joueur, joueur_actif):
+def affichage_plateau(fenetre, nb_joueur, taille_plateau, joueur, joueur_actif, tableauMurH, tableauMurV):
     # Clear fenetre
     fenetre.fill(noir)
 
@@ -141,13 +144,23 @@ def affichage_plateau(fenetre, nb_joueur, taille_plateau, joueur, joueur_actif):
                  "Joueur en cours : Joueur "+str(joueur_actif+1))
     # affiche_text(fenetre, 250, 50, blanc, "tableau")
 
-    # boutons pour choisir le nombre de joueur
+    # affichage du quadrillage
     for i in range(taille_plateau):
         for j in range(taille_plateau):
             creation_bouton(fenetre, Quadrillage_dx+Qpas_x*i, Quadrillage_dy +
                             Qpas_y*j, Qpas_x-Quad_mur, Qpas_y-Quad_mur, gris, gris, "", False)
 
-    # affichage des boutons (pour le deplacement ou le placement de mur)
+    # affichage des murs
+    for i in range(taille_plateau-1):
+        for j in range(taille_plateau-1):
+            if tableauMurV[i][j] != 0:
+                creation_bouton(fenetre, Quadrillage_dx+Qpas_x*(i+1), Quadrillage_dy +
+                                Qpas_y*j, 2*Qpas_y, Quad_mur, tableauMurV[i][j], tableauMurV[i][j], "", False)  # mur vertical
+            if tableauMurH[i][j] != 0:
+                creation_bouton(fenetre, Quadrillage_dx+Qpas_x*i, Quadrillage_dy +
+                                Qpas_y*(j+1), Quad_mur, 2*Qpas_x, tableauMurH[i][j], tableauMurH[i][j], "", False)  # mur horizontal
+
+   # affichage des boutons (pour le deplacement ou le placement de mur)
     creation_bouton(fenetre, 400, 510, 50, 150,
                     gris, blanc, "Se Deplacer", True)
 
@@ -172,7 +185,8 @@ def affichage_plateau(fenetre, nb_joueur, taille_plateau, joueur, joueur_actif):
 
     pygame.display.flip()
 
-#Creation d'un tableau de mur
+
+# Creation d'un tableau de mur
 def initMurTabMur(taille_plateau):
     mur = []
     for i in range(taille_plateau-1):
@@ -181,17 +195,8 @@ def initMurTabMur(taille_plateau):
             mur[i].append(0)
     return mur
 
+
 # fonction qui affiche un tableau
 def afficheTableau(tableau):
     for ligne in tableau:
         print(ligne)
-
-# fonction qui termine la partie si un joueur a gagné
-def gameIsOver(nb_joueur, player1, player2, player3, player4):
-    if nb_joueur == 2:
-        if player1.y == taille_plateau or player2.y == 1:
-            return True
-    if nb_joueur == 4:
-        if player1.y == taille_plateau or player2.x == 1 or player3.y == 1 or player4.x == taille_plateau:
-            return True
-    return False

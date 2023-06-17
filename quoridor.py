@@ -113,32 +113,90 @@ class Joueur:
                         break
 
     def poser_murV(self, fenetre, tableauMurV, taille_plateau):
+        # on init un tableau avec les coordonnées des murs possibles
+        mur_possible = [[False for i in range(
+            taille_plateau-1)] for j in range(taille_plateau-1)]
+
         # on affiche les milieux de murs possibles
         for i in range(taille_plateau-1):
             for j in range(taille_plateau-1):
-                if tableauMurV[i][j] == 0:
-                    pygame.draw.circle(fenetre, blanc, (Quadrillage_dx+Qpas_x*(i+1)-Quad_mur/2,
-                                                        Quadrillage_dy+Qpas_y*(j+1)-Quad_mur/2), 6, 0)
+                if tableauMurV[i][j] == 0:  # si le mur n'est pas déjà posé
+                    if j > 0:  # si on est pas sur la premiere ligne
+                        if j < taille_plateau-2:  # si on est pas sur la derniere ligne
+                            # si il n'y a pas de mur au dessus et en dessous
+                            if tableauMurV[i][j-1] == 0 and tableauMurV[i][j+1] == 0:
+                                pygame.draw.circle(fenetre, blanc, (Quadrillage_dx+Qpas_x*(
+                                    i+1)-Quad_mur/2, Quadrillage_dy+Qpas_y*(j+1)-Quad_mur/2), 6, 0)
+                                mur_possible[i][j] = True
+                        else:  # si on est sur la derniere ligne
+                            if tableauMurV[i][j-1] == 0:
+                                pygame.draw.circle(fenetre, blanc, (Quadrillage_dx+Qpas_x*(
+                                    i+1)-Quad_mur/2, Quadrillage_dy+Qpas_y*(j+1)-Quad_mur/2), 6, 0)
+                                mur_possible[i][j] = True
+                    else:  # si on est sur la premiere ligne
+                        if tableauMurV[i][j+1] == 0:
+                            pygame.draw.circle(fenetre, blanc, (Quadrillage_dx+Qpas_x*(
+                                i+1)-Quad_mur/2, Quadrillage_dy+Qpas_y*(j+1)-Quad_mur/2), 6, 0)
+                            mur_possible[i][j] = True
         pygame.display.flip()
-
-        # on attend que le joueur clique sur un neoud de mur
-        mur_choisi = False
+        mur_choisi = False  # on attend que le joueur clique sur un neoud de mur
         while mur_choisi == False:
             ev = pygame.event.poll()
-            # si on clique
-            if pygame.mouse.get_pressed()[0]:
+            if pygame.mouse.get_pressed()[0]:  # si on clique
                 pos = pygame.mouse.get_pos()
                 if pos[0] > Quadrillage_dx and pos[0] < Quadrillage_dx+Quadrillage_lX and pos[1] > Quadrillage_dy and pos[1] < Quadrillage_dy+Quadrillage_ly:
                     # on cherche la case ou le joueur a clique
                     for i in range(taille_plateau-1):
                         for j in range(taille_plateau-1):
-                            # print("test des valeurs de i et j : ", i, j)
-                            if tableauMurV[i][j] == 0:
+                            if tableauMurV[i][j] == 0 and mur_possible[i][j] == True:
                                 distance = (Quadrillage_dx+Qpas_x*(i+1)-Quad_mur/2-pos[0])**2+(
                                     Quadrillage_dy+Qpas_y*(j+1)-Quad_mur/2-pos[1])**2
                                 if distance < 36:
-                                    print("poser murV")
+                                    # print("poser murV")
                                     tableauMurV[i][j] = self.couleur
+                                    mur_choisi = True
+                                    break
+
+    def poser_murH(self, fenetre, tableauMurH, taille_plateau):
+        # on init un tableau avec les coordonnées des murs possibles
+        mur_possible = [[False for i in range(
+            taille_plateau-1)] for j in range(taille_plateau-1)]
+
+        # on affiche les milieux de murs possibles
+        for i in range(taille_plateau-1):
+            for j in range(taille_plateau-1):
+                if tableauMurH[i][j] == 0 and tableauMurV[i][j] == 0:
+                    if i > 0:
+                        if i < taille_plateau-2:
+                            if tableauMurH[i-1][j] == 0 and tableauMurH[i+1][j] == 0:
+                                pygame.draw.circle(fenetre, blanc, (Quadrillage_dx+Qpas_x*(
+                                    i+1)-Quad_mur/2, Quadrillage_dy+Qpas_y*(j+1)-Quad_mur/2), 6, 0)
+                                mur_possible[i][j] = True
+                        else:
+                            if tableauMurH[i-1][j] == 0:
+                                pygame.draw.circle(fenetre, blanc, (Quadrillage_dx+Qpas_x*(
+                                    i+1)-Quad_mur/2, Quadrillage_dy+Qpas_y*(j+1)-Quad_mur/2), 6, 0)
+                                mur_possible[i][j] = True
+                    else:
+                        if tableauMurH[i+1][j] == 0:
+                            pygame.draw.circle(fenetre, blanc, (Quadrillage_dx+Qpas_x*(
+                                i+1)-Quad_mur/2, Quadrillage_dy+Qpas_y*(j+1)-Quad_mur/2), 6, 0)
+                            mur_possible[i][j] = True
+        pygame.display.flip()
+        mur_choisi = False
+        while mur_choisi == False:
+            ev = pygame.event.poll()
+            if pygame.mouse.get_pressed()[0]:
+                pos = pygame.mouse.get_pos()
+                if pos[0] > Quadrillage_dx and pos[0] < Quadrillage_dx+Quadrillage_lX and pos[1] > Quadrillage_dy and pos[1] < Quadrillage_dy+Quadrillage_ly:
+                    for i in range(taille_plateau-1):
+                        for j in range(taille_plateau-1):
+                            if tableauMurH[i][j] == 0 and tableauMurV[i][j] == 0 and mur_possible[i][j] == True:
+                                distance = (Quadrillage_dx+Qpas_x*(i+1)-Quad_mur/2-pos[0])**2+(
+                                    Quadrillage_dy+Qpas_y*(j+1)-Quad_mur/2-pos[1])**2
+                                if distance < 36:
+                                    # print("poser murH")
+                                    tableauMurH[i][j] = self.couleur
                                     mur_choisi = True
                                     break
 
@@ -159,17 +217,11 @@ print(taille_plateau)
 tableauMurH = initMurTabMur(taille_plateau)
 tableauMurV = initMurTabMur(taille_plateau)
 
-# debug
-# afficheTableau(tableauMurH)
-# print("\n")
-# afficheTableau(tableauMurV)
-
 # init du pas graphique
 Qpas_x = Quadrillage_lX / taille_plateau
 Qpas_y = Quadrillage_ly / taille_plateau
 
-# creation des joueurs
-# on créé et rempli le tableau des joueurs
+# init des joueurs
 joueurs = []
 
 if nb_joueur == 2:
@@ -190,7 +242,8 @@ while not partie_finie:
     for i in range(nb_joueur):
 
         # initialisation du plateau et des données
-        affichage_plateau(fenetre_jeu, nb_joueur, taille_plateau, joueurs, i)
+        affichage_plateau(fenetre_jeu, nb_joueur, taille_plateau,
+                          joueurs, i, tableauMurH, tableauMurV)
 
         pygame.display.flip()
 
@@ -201,21 +254,30 @@ while not partie_finie:
                 pygame.quit()
             if ev.type == pygame.QUIT:
                 pygame.quit()
+
             # si on clique sur un bouton
             if pygame.mouse.get_pressed()[0]:
                 pos = pygame.mouse.get_pos()
-                # print("pos = " + str(pos))
-                # Position bouton deplacement 400, 510, 50, 150,
+
+                # si on clique sur deplacer
                 if pos[0] > 400 and pos[0] < 550 and pos[1] > 510 and pos[1] < 660:
                     joueurs[i].deplacer(fenetre_jeu, nb_joueur, taille_plateau)
                     pygame.display.flip()
                     break
-                # Position bouton mur 615, 150, 50, 165
+
+                # si on clique sur pose mur vertical en 615, 150, 50, 165
                 if pos[0] > 615 and pos[0] < 780 and pos[1] > 150 and pos[1] < 200:
                     joueurs[i].poser_murV(
                         fenetre_jeu, tableauMurV, taille_plateau)
                     pygame.display.flip()
                     break
 
-    # pause 0.25 seconde
-    pygame.time.wait(250)
+                # si on clique sur pose mur horizontal en 615, 300, 50, 165
+                if pos[0] > 615 and pos[0] < 780 and pos[1] > 300 and pos[1] < 350:
+                    joueurs[i].poser_murH(
+                        fenetre_jeu, tableauMurH, taille_plateau)
+                    pygame.display.flip()
+                    break
+
+    # pause 0.1s
+    pygame.time.wait(100)
