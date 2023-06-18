@@ -304,15 +304,43 @@ def afficheTableau(tableau):
 
 #Fonction de vérification de victoire
 def victoire(x, y, taille_plateau, couleur):
+    print("victoire")
+    print("taille_plateau : ", taille_plateau)
+    print("x : ", x)
+    print("y : ", y)
     if couleur==rouge :
-        if y==5:
+        if y==taille_plateau:
             return True
-    if couleur==bleu :
-        if x==0:
+    elif couleur==bleu :
+        if y==1:
             return True
-    if couleur==violet :
-        if y==0:
+    elif couleur==violet :
+        if x==1:
             return True
-    if couleur==vert :
-        if x==5:
+    elif couleur==vert :
+        if x==taille_plateau:
             return True
+        
+
+# fonction qui affiche la page de victoire
+def afficher_victoire(fenetre, joueur_actif):
+    # Clear fenetre
+    fenetre.fill(noir)
+    if joueur_actif == rouge:
+        joueur_actif = "rouge"
+    elif joueur_actif == bleu:
+        joueur_actif = "bleu"
+    elif joueur_actif == violet:
+        joueur_actif = "violet"
+    elif joueur_actif == vert:
+        joueur_actif = "vert"
+
+    # Affichage des textes
+    affiche_text(fenetre, 250, 100, blanc, "Victoire du joueur "+str(joueur_actif))
+    affiche_text(fenetre, 250, 200, blanc, "Félicitation !")
+
+    # boutons pour choisir le nombre de joueur
+    creation_bouton(fenetre, 100, 300, 200, 200, bleu, blanc, "Rejouer", True)
+    creation_bouton(fenetre, 500, 300, 200, 200, bleu, blanc, "Quitter", True)
+
+    pygame.display.flip()

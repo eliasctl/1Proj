@@ -175,11 +175,6 @@ class Joueur:
                         # on deplace le joueur
                         self.x = indx
                         self.y = indy
-
-                        # IMPORT DE LA CONDITION DE VICTOIRE
-                        if victoire(self.x, self.y, taille_plateau, self.couleur)==True:
-                            print("Victoire du joueur : ", self.couleur)
-                            partie_finie=True
                         break
 
     def poser_murV(self, fenetre, tableauMurV, taille_plateau):
@@ -308,9 +303,14 @@ else:
 
 partie_finie = False
 while not partie_finie:
-
+    print(partie_finie)
     for i in range(nb_joueur):
-
+        #test de victoire
+        if victoire(joueurs[i].x, joueurs[i].y, taille_plateau, joueurs[i].couleur)==True:
+            print("Victoire du joueur : ", joueurs[i].couleur)
+            afficher_victoire(fenetre_jeu, joueurs[i].couleur)
+            partie_finie = True
+            break
         # initialisation du plateau et des données
         affichage_plateau(fenetre_jeu, nb_joueur, taille_plateau,
                           joueurs, i, tableauMurH, tableauMurV)
@@ -347,8 +347,13 @@ while not partie_finie:
                         fenetre_jeu, tableauMurH, taille_plateau)
                     pygame.display.flip()
                     break
-        if partie_finie :
-            break
+    #test de victoire
+    if victoire(joueurs[i].x, joueurs[i].y, taille_plateau, joueurs[i].couleur)==True:
+        print("Victoire du joueur : ", joueurs[i].couleur)
+        #ca s'affiche pas
+        afficher_victoire(fenetre_jeu, joueurs[i].couleur)
+        partie_finie = True
+        break
 
     # pause 0.1s
     pygame.time.wait(100)
