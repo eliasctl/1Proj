@@ -1,4 +1,5 @@
 petit soucis : perso je peux plus sauter au dessus d'un joueur
+             : je vois pas le menu en V1
 
 A faire :
 
