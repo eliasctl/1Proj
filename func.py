@@ -1,5 +1,6 @@
 import pygame
 import time
+import os
 
 # Initialisation de Pygame
 pygame.init()
@@ -304,10 +305,6 @@ def afficheTableau(tableau):
 
 #Fonction de vérification de victoire
 def victoire(x, y, taille_plateau, couleur):
-    print("victoire")
-    print("taille_plateau : ", taille_plateau)
-    print("x : ", x)
-    print("y : ", y)
     if couleur==rouge :
         if y==taille_plateau:
             return True
@@ -323,7 +320,7 @@ def victoire(x, y, taille_plateau, couleur):
         
 
 # fonction qui affiche la page de victoire
-def afficher_victoire(fenetre, joueur_actif, nb_coups):
+def afficher_victoire(fenetre, joueur_actif, nb_coups, python, sys_argv):
     # Clear fenetre
     pygame.display.update(fenetre.fill(0))
 
@@ -362,12 +359,8 @@ def afficher_victoire(fenetre, joueur_actif, nb_coups):
         if pygame.mouse.get_pressed()[0]:
             pos = pygame.mouse.get_pos()
             if pos[0] > 100 and pos[0] < 400 and pos[1] > 400 and pos[1] < 500:
-                return True
+                # On relance le programme
+                pygame.quit()
+                os.execv(python, [python] + sys_argv)
             if pos[0] > 500 and pos[0] < 700 and pos[1] > 400 and pos[1] < 500:
                 pygame.quit()
-        
-        # fonction pour rejouer
-
-
-
-    pygame.display.flip()

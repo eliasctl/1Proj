@@ -1,7 +1,10 @@
 import pygame
+import sys
 from func import *
 from pygame import mixer
 
+# Possibilité de relancer la partie
+    
 
 # mettre en place la musique
 mixer.init()
@@ -345,8 +348,12 @@ while not partie_finie:
                     break
         #test de victoire
         if victoire(joueurs[i].x, joueurs[i].y, taille_plateau, joueurs[i].couleur)==True:
-            print("Victoire du joueur : ", joueurs[i].couleur)
-            afficher_victoire(fenetre_jeu, joueurs[i].couleur, nb_coups)
+
+            # Recupération du chemin vers python
+            python = sys.executable
+
+            # Affichage de la victoire avec possibilité de relancer la partie
+            afficher_victoire(fenetre_jeu, joueurs[i].couleur, nb_coups, python, sys.argv)
             partie_finie = True
             break
 
