@@ -360,31 +360,31 @@ class Joueur:
 
         pygame.display.flip()
 
-    mur_choisi = False  # Attente que le joueur clique sur un neoud de mur
+        mur_choisi = False  # Attente que le joueur clique sur un neoud de mur
 
-    while mur_choisi == False:
-        ev = pygame.event.poll()
+        while mur_choisi == False:
+            ev = pygame.event.poll()
 
-        # Evennement de clic
-        if pygame.mouse.get_pressed()[0]:
-            pos = pygame.mouse.get_pos()
+            # Evennement de clic
+            if pygame.mouse.get_pressed()[0]:
+                pos = pygame.mouse.get_pos()
 
-            if pos[0] > Quadrillage_dx and pos[0] < Quadrillage_dx+Quadrillage_lX and pos[1] > Quadrillage_dy and pos[1] < Quadrillage_dy+Quadrillage_ly:
+                if pos[0] > Quadrillage_dx and pos[0] < Quadrillage_dx+Quadrillage_lX and pos[1] > Quadrillage_dy and pos[1] < Quadrillage_dy+Quadrillage_ly:
 
-                # Récupération de la case cliquée
-                for i in range(taille_plateau-1):
+                    # Récupération de la case cliquée
+                    for i in range(taille_plateau-1):
 
-                    for j in range(taille_plateau-1):
+                        for j in range(taille_plateau-1):
 
-                        if tableauMurH[i][j] == 0 and tableauMurV[i][j] == 0 and mur_possible[i][j] == True:
-                            distance = (Quadrillage_dx+Qpas_x*(i+1)-Quad_mur/2-pos[0])**2+(
-                                Quadrillage_dy+Qpas_y*(j+1)-Quad_mur/2-pos[1])**2
+                            if tableauMurH[i][j] == 0 and tableauMurV[i][j] == 0 and mur_possible[i][j] == True:
+                                distance = (Quadrillage_dx+Qpas_x*(i+1)-Quad_mur/2-pos[0])**2+(
+                                    Quadrillage_dy+Qpas_y*(j+1)-Quad_mur/2-pos[1])**2
 
-                            if distance < 36:
-                                # print("poser murH")
-                                tableauMurH[i][j] = self.couleur
-                                mur_choisi = True
-                                break
+                                if distance < 36:
+                                    # print("poser murH")
+                                    tableauMurH[i][j] = self.couleur
+                                    mur_choisi = True
+                                    break
 
 
 # Programme principal
