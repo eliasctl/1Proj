@@ -319,45 +319,46 @@ class Joueur:
                                     mur_choisi = True
                                     break
 
-# Fonction pour poser un mur horizontal
-def poser_murH(self, fenetre, tableauMurH, taille_plateau):
-    # Initialisation d'un tableau avec les coordonnées des murs possibles
-    mur_possible = [[False for i in range(taille_plateau-1)] for j in range(taille_plateau-1)]
-    # Son du bouton mur horizontal
-    click = pygame.mixer.Sound("Click.mp3")
-    click.set_volume(0.5)
-    click.play()
+    # Fonction pour poser un mur horizontal
+    def poser_murH(self, fenetre, tableauMurH, taille_plateau):
+        # Initialisation d'un tableau avec les coordonnées des murs possibles
+        mur_possible = [[False for i in range(taille_plateau-1)] for j in range(taille_plateau-1)]
+        # Son du bouton mur horizontal
+        click = pygame.mixer.Sound("Click.mp3")
+        click.set_volume(0.5)
+        click.play()
 
-    # Affichage des milieux de murs possibles
-    for i in range(taille_plateau-1):
+        # Affichage des milieux de murs possibles
+        for i in range(taille_plateau-1):
 
-        for j in range(taille_plateau-1):
+            for j in range(taille_plateau-1):
 
-            if tableauMurH[i][j] == 0 and tableauMurV[i][j] == 0:
+                if tableauMurH[i][j] == 0 and tableauMurV[i][j] == 0:
 
-                if i > 0:  # Si le murs n'est pas sur la premiere colonne
+                    if i > 0:  # Si le murs n'est pas sur la premiere colonne
 
-                    if i < taille_plateau-2:  # Si le mur n'est pas sur la derniere colonne
+                        if i < taille_plateau-2:  # Si le mur n'est pas sur la derniere colonne
 
-                        # Si il n'y a pas de mur à gauche et à droite
-                        if tableauMurH[i-1][j] == 0 and tableauMurH[i+1][j] == 0:
+                            # Si il n'y a pas de mur à gauche et à droite
+                            if tableauMurH[i-1][j] == 0 and tableauMurH[i+1][j] == 0:
+                                pygame.draw.circle(fenetre, blanc, (Quadrillage_dx+Qpas_x*(
+                                    i+1)-Quad_mur/2, Quadrillage_dy+Qpas_y*(j+1)-Quad_mur/2), 6, 0)
+                                mur_possible[i][j] = True
+
+                        else:  # Si on est sur la derniere colonne
+
+                            if tableauMurH[i-1][j] == 0:
+                                pygame.draw.circle(fenetre, blanc, (Quadrillage_dx+Qpas_x*(
+                                    i+1)-Quad_mur/2, Quadrillage_dy+Qpas_y*(j+1)-Quad_mur/2), 6, 0)
+                                mur_possible[i][j] = True
+                    
+                    else:  # Si on est sur la premiere colonne
+                        if tableauMurH[i+1][j] == 0:
                             pygame.draw.circle(fenetre, blanc, (Quadrillage_dx+Qpas_x*(
                                 i+1)-Quad_mur/2, Quadrillage_dy+Qpas_y*(j+1)-Quad_mur/2), 6, 0)
                             mur_possible[i][j] = True
 
-                    else:  # Si on est sur la derniere colonne
-
-                        if tableauMurH[i-1][j] == 0:
-                            pygame.draw.circle(fenetre, blanc, (Quadrillage_dx+Qpas_x*(
-                                i+1)-Quad_mur/2, Quadrillage_dy+Qpas_y*(j+1)-Quad_mur/2), 6, 0)
-                            mur_possible[i][j] = True
-                else:  # Si on est sur la premiere colonne
-                    if tableauMurH[i+1][j] == 0:
-                        pygame.draw.circle(fenetre, blanc, (Quadrillage_dx+Qpas_x*(
-                            i+1)-Quad_mur/2, Quadrillage_dy+Qpas_y*(j+1)-Quad_mur/2), 6, 0)
-                        mur_possible[i][j] = True
-
-    pygame.display.flip()
+        pygame.display.flip()
 
     mur_choisi = False  # Attente que le joueur clique sur un neoud de mur
 
