@@ -323,9 +323,13 @@ def victoire(x, y, taille_plateau, couleur):
         
 
 # fonction qui affiche la page de victoire
-def afficher_victoire(fenetre, joueur_actif):
+def afficher_victoire(fenetre, joueur_actif, nb_coups):
     # Clear fenetre
-    fenetre.fill(noir)
+    pygame.display.update(fenetre.fill(0))
+
+    # Agrrandissement de la fenetre pour afficher le texte
+    fenetre = pygame.display.set_mode((800, 700))
+    # On récupère le nom du joueur actif
     if joueur_actif == rouge:
         joueur_actif = "rouge"
     elif joueur_actif == bleu:
@@ -338,9 +342,32 @@ def afficher_victoire(fenetre, joueur_actif):
     # Affichage des textes
     affiche_text(fenetre, 250, 100, blanc, "Victoire du joueur "+str(joueur_actif))
     affiche_text(fenetre, 250, 200, blanc, "Félicitation !")
+    
+    # Affichage du nombre de coups
+    affiche_text(fenetre, 250, 300, blanc, "Nombre de coups : "+str(nb_coups))
 
-    # boutons pour choisir le nombre de joueur
-    creation_bouton(fenetre, 100, 300, 200, 200, bleu, blanc, "Rejouer", True)
-    creation_bouton(fenetre, 500, 300, 200, 200, bleu, blanc, "Quitter", True)
+    # Affichage des boutons pour rejouer ou quitter
+    creation_bouton(fenetre, 100, 400, 200, 200, bleu, blanc, "Rejouer", True)
+    creation_bouton(fenetre, 500, 400, 200, 200, bleu, blanc, "Quitter", True)
+
+    pygame.display.flip()
+    while True:
+        # test de sortie
+        ev = pygame.event.poll()
+        if ev.type == pygame.KEYDOWN and ev.key == pygame.K_ESCAPE:
+            pygame.quit()
+        if ev.type == pygame.QUIT:
+            pygame.quit()
+        # si on clique sur un bouton
+        if pygame.mouse.get_pressed()[0]:
+            pos = pygame.mouse.get_pos()
+            if pos[0] > 100 and pos[0] < 400 and pos[1] > 400 and pos[1] < 500:
+                return True
+            if pos[0] > 500 and pos[0] < 700 and pos[1] > 400 and pos[1] < 500:
+                pygame.quit()
+        
+        # fonction pour rejouer
+
+
 
     pygame.display.flip()
