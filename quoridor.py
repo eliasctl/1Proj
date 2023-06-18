@@ -1,4 +1,6 @@
+# Description : Jeu Quoridor
 # Auteurs : William Bergue, Paul Mareschi, Elias Moussa-Osman, Clovis Kouoi
+# Date : 18/06/2023
 
 # Importation des libraries
 import pygame
@@ -363,27 +365,31 @@ class Joueur:
 
 
 # Programme principal
-# initialisation graphiques
+
+# Initialisation graphiques
 fenetre_jeu = cree_page_principale()
 
-# Importation des choix d'un joueur
+# Récupération des paramètres de la partie
 choix_jeu = afficher_menu_jeu(fenetre_jeu)
+# Nombre de joueurs
 nb_joueur = choix_jeu[0]
 print(nb_joueur)
+# Taille du plateau
 taille_plateau = choix_jeu[1]
 print(taille_plateau)
 
-# initialisation des tableaux de mur
+# Initialisation des tableaux de mur
 tableauMurH = initMurTabMur(taille_plateau)
 tableauMurV = initMurTabMur(taille_plateau)
 
-# init du pas graphique
+# Initialisation du pas graphique
 Qpas_x = Quadrillage_lX / taille_plateau
 Qpas_y = Quadrillage_ly / taille_plateau
 
-# init des joueurs
+# Initalisation des joueurs
 joueurs = []
 
+# Récupération du nombre de joueur
 if nb_joueur == 2:
     joueurs.append(Joueur((taille_plateau+1)/2, 1, rouge, 10))
     joueurs.append(Joueur((taille_plateau+1)/2, taille_plateau, bleu, 10))
@@ -396,50 +402,53 @@ else:
     joueurs.append(Joueur(1, (taille_plateau+1)/2, vert, 5))
 
 
-partie_finie = False
-nb_coups = 0
+# Boucle de jeu
+
+partie_finie = False # Variable pour savoir si la partie est finie
+nb_coups = 0 # Variable pour compter le nombre de coups
+
 while not partie_finie:
     nb_coups += 1
-    print(partie_finie)
     for i in range(nb_joueur):
-        # initialisation du plateau et des données
+        # Initialisation du plateau et des données
         affichage_plateau(fenetre_jeu, nb_joueur, taille_plateau,
                           joueurs, i, tableauMurH, tableauMurV)
         pygame.display.flip()
 
         while True:
-            # test de sortie
+            # Test de sortie
             ev = pygame.event.poll()
             if ev.type == pygame.KEYDOWN and ev.key == pygame.K_ESCAPE:
                 pygame.quit()
+
             if ev.type == pygame.QUIT:
                 pygame.quit()
 
-            # si on clique sur un bouton
+            # Evennement de clic sur un bouton
             if pygame.mouse.get_pressed()[0]:
                 pos = pygame.mouse.get_pos()
 
-                # si on clique sur deplacer
+                # Clic sur le bouton de déplacement (400, 510, 150, 150)
                 if pos[0] > 400 and pos[0] < 550 and pos[1] > 510 and pos[1] < 660:
                     joueurs[i].deplacer(fenetre_jeu, nb_joueur, taille_plateau)
                     pygame.display.flip()
                     break
 
-                # si on clique sur pose mur vertical en 615, 150, 50, 165
+                # Clic sur le bouton de pose de mur vertical (615, 150, 50, 165)
                 if pos[0] > 615 and pos[0] < 780 and pos[1] > 150 and pos[1] < 200:
                     joueurs[i].poser_murV(
                         fenetre_jeu, tableauMurV, taille_plateau)
                     pygame.display.flip()
                     break
 
-                # si on clique sur pose mur horizontal en 615, 300, 50, 165
+                # Clic sur le bouton de pose de mur horizontal (615, 300, 50, 165)
                 if pos[0] > 615 and pos[0] < 780 and pos[1] > 300 and pos[1] < 350:
                     joueurs[i].poser_murH(
                         fenetre_jeu, tableauMurH, taille_plateau)
                     pygame.display.flip()
                     break
 
-        #test de victoire
+        # Test de victoire
         if victoire(joueurs[i].x, joueurs[i].y, taille_plateau, joueurs[i].couleur)==True:
 
             # Recupération du chemin vers python
@@ -447,6 +456,8 @@ while not partie_finie:
 
             # Affichage de la victoire avec possibilité de relancer la partie
             afficher_victoire(fenetre_jeu, joueurs[i].couleur, nb_coups, python, sys.argv)
+
+            # Sortie de la boucle de jeu
             partie_finie = True
             break
 

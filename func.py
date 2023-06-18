@@ -1,3 +1,5 @@
+# Importation des libraries
+
 import pygame
 import time
 import os
@@ -5,7 +7,7 @@ import os
 # Initialisation de Pygame
 pygame.init()
 
-# couleur
+# Création des couleurs
 noir = (0, 0, 0)
 blanc = (255, 255, 255)
 bleu = (0, 0, 255)
@@ -15,11 +17,11 @@ violet = (84, 0, 201)
 gris = (150, 150, 150)
 ombre = (50, 50, 50)
 
-# variables du jeux
+# Création des variables de jeu
 nb_joueur = 0
 taille_plateau = 0
 
-# variables graphiques
+# Céation des variables garphiques
 Quadrillage_dx = 200  # position X du coin haut gauche du quadrillage
 Quadrillage_dy = 100  # position Y du coin haut gauche du quadrillage
 Quadrillage_lX = 400  # longueur du quadrillage
@@ -29,7 +31,7 @@ Qpas_y = 1  # pas du quadrillage en Y
 Quad_mur = 5  # largeur des murs du quadrillage
 
 
-# fonction qui affiche la page principale
+# Fonction qui affiche la page principale
 def cree_page_principale():
     screen = pygame.display.set_mode((800, 600))
     pygame.display.set_caption("Quoridor")  # titre de la fenetre
@@ -38,7 +40,8 @@ def cree_page_principale():
 
 # Création d'un bouton complet avec texte et ombre
 def creation_bouton(screen, x, y, hauteur, largeur, couleurBoutton, couleurText, text, PossedeUneOmbre):
-    # affichage ombre
+    
+    # Affichage ombre
     if PossedeUneOmbre:
         button_rect = pygame.Rect(x+3, y+3, largeur, hauteur)
         button_color = pygame.Color(ombre)
@@ -47,18 +50,17 @@ def creation_bouton(screen, x, y, hauteur, largeur, couleurBoutton, couleurText,
     # Affichage du bouton
     button_rect = pygame.Rect(x, y, largeur, hauteur)
     button_color = pygame.Color(couleurBoutton)
-    button_text = pygame.font.SysFont(None, 23).render(
-        text, True, pygame.Color(couleurText))
+    button_text = pygame.font.SysFont(None, 23).render(text, True, pygame.Color(couleurText))
     pygame.draw.rect(screen, button_color, button_rect)
     screen.blit(button_text, button_rect.move(largeur/4, hauteur/2))
 
-# fonction qui affiche du texte
+# Fonction d'affichage de texte
 def affiche_text(screen, x, y, couleurText, text):
     font = pygame.font.Font(None, 36)
     text = font.render(text, 1, couleurText)
     screen.blit(text, (x, y))
 
-# Fonction qui affiche la confirmation de choix
+# Affichage du menu de confirmation des choix
 def afficher_confirmation_choix(fenetre, nb_joueur, taille_plateau, mode_jeu):
     fenetre.fill(noir)
     affiche_text(fenetre, 250, 50, blanc, "Confirmation de vos choix : ")
@@ -72,8 +74,15 @@ def afficher_confirmation_choix(fenetre, nb_joueur, taille_plateau, mode_jeu):
 
     choix_fait = 0
     while choix_fait == 0:
+        # Tests de sortie
         ev = pygame.event.poll()
-        # si on clique sur un bouton
+        if ev.type == pygame.KEYDOWN and ev.key == pygame.K_ESCAPE:
+            pygame.quit()
+
+        if ev.type == pygame.QUIT:
+            pygame.quit()
+
+        # Evennement de clic sur un bouton
         if pygame.mouse.get_pressed()[0]:
             pos = pygame.mouse.get_pos()
             if pos[0] > 250 and pos[0] < 350 and pos[1] > 500 and pos[1] < 600:
@@ -85,8 +94,9 @@ def afficher_confirmation_choix(fenetre, nb_joueur, taille_plateau, mode_jeu):
     return retour
 
 
-# Fonction qui affiche les choix pour le mode de jeu et retourne les choix sous forme de liste
+# Affichage des choix pour le mode de jeu et renvoie des choix sous forme de liste
 def afficher_menu_jeu(fenetre):
+
     # Création de la liste des choix
     liste_choix = []
 
@@ -117,14 +127,22 @@ def afficher_menu_jeu(fenetre):
     time.sleep(0.1)
     pygame.display.flip()
 
+    # Attente des choix
     fin = 0
     taille_plateau = 0
     nb_joueur = 0
     mode_jeu = 0
 
     while fin == 0:
+        # Tests de sortie
         ev = pygame.event.poll()
-        # si on clique sur un bouton
+        if ev.type == pygame.KEYDOWN and ev.key == pygame.K_ESCAPE:
+            pygame.quit()
+
+        if ev.type == pygame.QUIT:
+            pygame.quit()
+
+        # Evennement de clic sur un bouton
         if pygame.mouse.get_pressed()[0]:
             pos = pygame.mouse.get_pos()
             if pos[0] > 400 and pos[0] < 490 and pos[1] > 250 and pos[1] < 340:
@@ -179,7 +197,8 @@ def afficher_menu_jeu(fenetre):
             if pos[0] > 300 and pos[0] < 500 and pos[1] > 500 and pos[1] < 590:
                 if taille_plateau != 0 and nb_joueur != 0 and mode_jeu != 0:
                     fin = 1
-    # pygame.quit()
+
+    # Ajout des paramètres à la liste
     liste_choix.append(nb_joueur)
     liste_choix.append(taille_plateau)
     liste_choix.append(mode_jeu)
@@ -191,27 +210,27 @@ def afficher_menu_jeu(fenetre):
         afficher_menu_jeu(fenetre)
 
 
-# fonction qui affiche le plateau de jeu
+# Affichage du plateau de jeu
 def affichage_plateau(fenetre, nb_joueur, taille_plateau, joueur, joueur_actif, tableauMurH, tableauMurV):
+    
     # Clear fenetre
     fenetre.fill(noir)
 
-    # init du pas graphique
+    # Initialisation du pas graphique
     Qpas_x = Quadrillage_lX / taille_plateau
     Qpas_y = Quadrillage_ly / taille_plateau
 
     # Affichage des textes
     affiche_text(fenetre, 250, 30, joueur[joueur_actif].couleur,
                  "Joueur en cours : Joueur "+str(joueur_actif+1))
-    # affiche_text(fenetre, 250, 50, blanc, "tableau")
 
-    # affichage du quadrillage
+    # Affichage du quadrillage
     for i in range(taille_plateau):
         for j in range(taille_plateau):
             creation_bouton(fenetre, Quadrillage_dx+Qpas_x*i, Quadrillage_dy +
                             Qpas_y*j, Qpas_x-Quad_mur, Qpas_y-Quad_mur, gris, gris, "", False)
 
-    # affichage des murs
+    # Affichage des murs
     for i in range(taille_plateau-1):
         for j in range(taille_plateau-1):
             if tableauMurV[i][j] != 0:
@@ -221,7 +240,7 @@ def affichage_plateau(fenetre, nb_joueur, taille_plateau, joueur, joueur_actif, 
                 creation_bouton(fenetre, Quadrillage_dx+Qpas_x*i, Quadrillage_dy +
                                 Qpas_y*(j+1), Quad_mur, 2*Qpas_x, tableauMurH[i][j], tableauMurH[i][j], "", False)  # mur horizontal
 
-   # affichage des boutons (pour le deplacement ou le placement de mur)
+   # Affichage des boutons (pour le deplacement ou le placement de mur)
     creation_bouton(fenetre, 400, 510, 50, 150,
                     gris, blanc, "Se Deplacer", True)
 
@@ -230,9 +249,7 @@ def affichage_plateau(fenetre, nb_joueur, taille_plateau, joueur, joueur_actif, 
     creation_bouton(fenetre, 615, 300, 50, 165, gris,
                     blanc, "mur Horizontal", True)
 
-    # print("Tableau affiché")
-
-    # affichage des joueurs
+    # Affichage des joueurs
     joueur[0].affichage_joueur(fenetre, joueur[0].couleur,
                                joueur[0].x, joueur[0].y)
     joueur[1].affichage_joueur(fenetre, joueur[1].couleur,
@@ -242,7 +259,6 @@ def affichage_plateau(fenetre, nb_joueur, taille_plateau, joueur, joueur_actif, 
             fenetre, joueur[2].couleur, joueur[2].x, joueur[2].y)
         joueur[3].affichage_joueur(
             fenetre, joueur[3].couleur, joueur[3].x, joueur[3].y)
-    # print("Joueurs affichés")
 
     pygame.display.flip()
 
@@ -257,12 +273,12 @@ def initMurTabMur(taille_plateau):
     return mur
 
 
-# fonction qui affiche un tableau
+# Affichage du tableau
 def afficheTableau(tableau):
     for ligne in tableau:
         print(ligne)
 
-#Fonction de vérification de victoire
+# Vérification de victoire
 def victoire(x, y, taille_plateau, couleur):
     if couleur==rouge :
         if y==taille_plateau:
@@ -278,10 +294,11 @@ def victoire(x, y, taille_plateau, couleur):
             return True
         
 
-# fonction qui affiche la page de victoire
+# Affichage de la page de victoire
 def afficher_victoire(fenetre, joueur_actif, nb_coups, python, sys_argv):
+    
     # Clear fenetre
-    pygame.display.update(fenetre.fill(0))
+    fenetre.fill(noir)
 
     # Agrrandissement de la fenetre pour afficher le texte
     fenetre = pygame.display.set_mode((800, 700))
@@ -307,6 +324,8 @@ def afficher_victoire(fenetre, joueur_actif, nb_coups, python, sys_argv):
     creation_bouton(fenetre, 500, 400, 200, 200, bleu, blanc, "Quitter", True)
 
     pygame.display.flip()
+
+    # Attente du choix de l'utilisateur
     while True:
         # test de sortie
         ev = pygame.event.poll()
@@ -314,11 +333,13 @@ def afficher_victoire(fenetre, joueur_actif, nb_coups, python, sys_argv):
             pygame.quit()
         if ev.type == pygame.QUIT:
             pygame.quit()
-        # si on clique sur un bouton
+
+        # Evennement de clic sur un bouton
         if pygame.mouse.get_pressed()[0]:
             pos = pygame.mouse.get_pos()
             if pos[0] > 100 and pos[0] < 400 and pos[1] > 400 and pos[1] < 500:
-                # On relance le programme
+                
+                # Relance du programme pour une nouvelle partie
                 pygame.quit()
                 os.execv(python, [python] + sys_argv)
             if pos[0] > 500 and pos[0] < 700 and pos[1] > 400 and pos[1] < 500:
