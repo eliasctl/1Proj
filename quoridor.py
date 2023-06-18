@@ -461,8 +461,8 @@ while not partie_finie:
             partie_finie = True
             break
 
-    # pause 0.1s
-    pygame.time.wait(100)
+    # Pause de 1ms pour éviter de surcharger le processeur
+    pygame.time.wait(1)
 
 
 
