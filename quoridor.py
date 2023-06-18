@@ -313,8 +313,7 @@ class Joueur:
     # Fonction pour poser un mur horizontal
     def poser_murH(self, fenetre, tableauMurH, taille_plateau):
         # Initialisation d'un tableau avec les coordonnées des murs possibles
-        mur_possible = [[False for i in range(
-            taille_plateau-1)] for j in range(taille_plateau-1)]
+        mur_possible = [[False for i in range(taille_plateau-1)] for j in range(taille_plateau-1)]
         # Son du bouton mur horizontal
         click = pygame.mixer.Sound("Click.mp3")
         click.set_volume(0.5)
@@ -461,7 +460,7 @@ while not partie_finie:
                         fenetre_jeu, tableauMurH, taille_plateau)
                     pygame.display.flip()
                     break
-
+        
         # Test de victoire
         if victoire(joueurs[i].x, joueurs[i].y, taille_plateau, joueurs[i].couleur) == True:
 
@@ -474,8 +473,7 @@ while not partie_finie:
             pygame.mixer.music.play()
 
             # Affichage de la victoire avec possibilité de relancer la partie
-            afficher_victoire(
-                fenetre_jeu, joueurs[i].couleur, nb_coups, python, sys.argv)
+            afficher_victoire(fenetre_jeu, joueurs[i].couleur, nb_coups, python, sys.argv)
 
             # Sortie de la boucle de jeu
             partie_finie = True
