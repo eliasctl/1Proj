@@ -32,7 +32,7 @@ class Joueur:
                                               Quadrillage_dy+Qpas_y*(indy-0.5)-Quad_mur/2), Qpas_x/3, 0)
 
     # Déplacement du joueur
-    def deplacer(self, fenetre, nb_joueur, taille_plateau , bot = False):
+    def deplacer(self, fenetre, nb_joueur, taille_plateau, bot=False):
         deplace_possible = []
 
         # Vérification des murs
@@ -219,7 +219,7 @@ class Joueur:
                             deplace_possible.append((self.x, self.y+2))
         pygame.display.flip()
 
-        if not bot :
+        if not bot:
             # Attente du clic du joueur
             while True:
                 ev = pygame.event.poll()
@@ -243,13 +243,14 @@ class Joueur:
                             self.x = indx
                             self.y = indy
                             break
-        else :
+        else:
 
             # Pause de 1 s pour laisser le temps au joueur de voir le déplacement du bot
             pygame.time.wait(1000)
 
             # Déplacement du bot de maniere aléatoire
-            self.x, self.y = deplace_possible[random.randint(0, len(deplace_possible)-1)]
+            self.x, self.y = deplace_possible[random.randint(
+                0, len(deplace_possible)-1)]
 
     # Fonction pour poser un mur vertical
     def poser_murV(self, fenetre, tableauMurV, taille_plateau):
@@ -322,7 +323,8 @@ class Joueur:
     # Fonction pour poser un mur horizontal
     def poser_murH(self, fenetre, tableauMurH, taille_plateau):
         # Initialisation d'un tableau avec les coordonnées des murs possibles
-        mur_possible = [[False for i in range(taille_plateau-1)] for j in range(taille_plateau-1)]
+        mur_possible = [[False for i in range(
+            taille_plateau-1)] for j in range(taille_plateau-1)]
         # Son du bouton mur horizontal
         click = pygame.mixer.Sound("Click.mp3")
         click.set_volume(0.5)
@@ -351,7 +353,7 @@ class Joueur:
                                 pygame.draw.circle(fenetre, blanc, (Quadrillage_dx+Qpas_x*(
                                     i+1)-Quad_mur/2, Quadrillage_dy+Qpas_y*(j+1)-Quad_mur/2), 6, 0)
                                 mur_possible[i][j] = True
-                    
+
                     else:  # Si on est sur la premiere colonne
                         if tableauMurH[i+1][j] == 0:
                             pygame.draw.circle(fenetre, blanc, (Quadrillage_dx+Qpas_x*(
@@ -435,7 +437,7 @@ if choix_jeu[2] == 1:
         for i in range(nb_joueur):
             # Initialisation du plateau et des données
             affichage_plateau(fenetre_jeu, nb_joueur, taille_plateau,
-                            joueurs, i, tableauMurH, tableauMurV)
+                              joueurs, i, tableauMurH, tableauMurV)
             pygame.display.flip()
 
             while True:
@@ -453,7 +455,8 @@ if choix_jeu[2] == 1:
 
                     # Clic sur le bouton de déplacement (400, 510, 150, 150)
                     if pos[0] > 400 and pos[0] < 550 and pos[1] > 510 and pos[1] < 660:
-                        joueurs[i].deplacer(fenetre_jeu, nb_joueur, taille_plateau)
+                        joueurs[i].deplacer(
+                            fenetre_jeu, nb_joueur, taille_plateau)
                         pygame.display.flip()
                         break
 
@@ -470,7 +473,7 @@ if choix_jeu[2] == 1:
                             fenetre_jeu, tableauMurH, taille_plateau)
                         pygame.display.flip()
                         break
-            
+
             # Test de victoire
             if victoire(joueurs[i].x, joueurs[i].y, taille_plateau, joueurs[i].couleur) == True:
 
@@ -483,7 +486,8 @@ if choix_jeu[2] == 1:
                 pygame.mixer.music.play()
 
                 # Affichage de la victoire avec possibilité de relancer la partie
-                afficher_victoire(fenetre_jeu, joueurs[i].couleur, nb_coups, python, sys.argv)
+                afficher_victoire(
+                    fenetre_jeu, joueurs[i].couleur, nb_coups, python, sys.argv)
 
                 # Sortie de la boucle de jeu
                 partie_finie = True
@@ -494,7 +498,6 @@ if choix_jeu[2] == 1:
 
 # Jeu avec bot
 else:
-
     # Boucle de jeu
     partie_finie = False
     nb_coups = 0
@@ -505,7 +508,7 @@ else:
             if i == 0:
                 # Initialisation du plateau et des données
                 affichage_plateau(fenetre_jeu, nb_joueur, taille_plateau,
-                                joueurs, i, tableauMurH, tableauMurV)
+                                  joueurs, i, tableauMurH, tableauMurV)
                 pygame.display.flip()
 
                 while True:
@@ -523,7 +526,8 @@ else:
 
                         # Clic sur le bouton de déplacement (400, 510, 150, 150)
                         if pos[0] > 400 and pos[0] < 550 and pos[1] > 510 and pos[1] < 660:
-                            joueurs[i].deplacer(fenetre_jeu, nb_joueur, taille_plateau)
+                            joueurs[i].deplacer(
+                                fenetre_jeu, nb_joueur, taille_plateau)
                             pygame.display.flip()
                             break
 
@@ -548,7 +552,8 @@ else:
                     python = sys.executable
 
                     # Affichage de la victoire avec possibilité de relancer la partie
-                    afficher_victoire(fenetre_jeu, joueurs[i].couleur, nb_coups, python, sys.argv)
+                    afficher_victoire(
+                        fenetre_jeu, joueurs[i].couleur, nb_coups, python, sys.argv)
 
                     # Sortie de la boucle de jeu
                     partie_finie = True
@@ -556,12 +561,12 @@ else:
 
             # Pause de 1 s pour éviter de surcharger le processeur
             pygame.time.wait(1)
-    
+
         # Tour du bot
         if partie_finie == False:
             # Initialisation du plateau et des données
             affichage_plateau(fenetre_jeu, nb_joueur, taille_plateau,
-                            joueurs, i, tableauMurH, tableauMurV, True)
+                              joueurs, i, tableauMurH, tableauMurV, True)
             pygame.display.flip()
 
             # Déplacement du bot
@@ -580,7 +585,8 @@ else:
                 pygame.mixer.music.play()
 
                 # Affichage de la victoire avec possibilité de relancer la partie
-                afficher_victoire(fenetre_jeu, joueurs[i].couleur, nb_coups, python, sys.argv, bot = True)
+                afficher_victoire(
+                    fenetre_jeu, joueurs[i].couleur, nb_coups, python, sys.argv, bot=True)
 
                 # Sortie de la boucle de jeu
                 partie_finie = True
