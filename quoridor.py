@@ -366,12 +366,11 @@ class Joueur:
 # initialisation graphiques
 fenetre_jeu = cree_page_principale()
 
-# if nb_joueur == 0:
-nb_joueur = afficher_menu_nb_joueur(fenetre_jeu)
+# Importation des choix d'un joueur
+choix_jeu = afficher_menu_jeu(fenetre_jeu)
+nb_joueur = choix_jeu[0]
 print(nb_joueur)
-
-# if taille_plateau == 0:
-taille_plateau = afficher_menu_taille_plateau(fenetre_jeu)
+taille_plateau = choix_jeu[1]
 print(taille_plateau)
 
 # initialisation des tableaux de mur

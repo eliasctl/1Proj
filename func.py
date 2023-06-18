@@ -52,84 +52,11 @@ def creation_bouton(screen, x, y, hauteur, largeur, couleurBoutton, couleurText,
     pygame.draw.rect(screen, button_color, button_rect)
     screen.blit(button_text, button_rect.move(largeur/4, hauteur/2))
 
-
 # fonction qui affiche du texte
 def affiche_text(screen, x, y, couleurText, text):
     font = pygame.font.Font(None, 36)
     text = font.render(text, 1, couleurText)
     screen.blit(text, (x, y))
-
-
-# fonction qui affiche le menu du nombre de joueur
-def afficher_menu_nb_joueur(fenetre):
-    # Clear fenetre
-    fenetre.fill(noir)
-
-    # Affichage des textes
-    affiche_text(fenetre, 250, 100, blanc, "Bienvenue sur Quoridor")
-    affiche_text(fenetre, 250, 200, blanc, "Choississez le nombre de joueurs")
-
-
-    # boutons pour choisir le nombre de joueur
-    creation_bouton(fenetre, 100, 300, 200, 200, bleu, blanc, "2 joueurs", True)
-    creation_bouton(fenetre, 500, 300, 200, 200, bleu, blanc, "4 joueurs", True)
-
-    pygame.display.flip()
-
-    nb_joueur = 0
-    while nb_joueur == 0:
-        # test de sortie
-        ev = pygame.event.poll()
-        if ev.type == pygame.KEYDOWN and ev.key == pygame.K_ESCAPE:
-            pygame.quit()
-        if ev.type == pygame.QUIT:
-            pygame.quit()
-        # si on clique sur un bouton
-        if pygame.mouse.get_pressed()[0]:
-            pos = pygame.mouse.get_pos()
-            if pos[0] > 100 and pos[0] < 300 and pos[1] > 300 and pos[1] < 500:
-                nb_joueur = 2
-            if pos[0] > 500 and pos[0] < 700 and pos[1] > 300 and pos[1] < 500:
-                nb_joueur = 4
-
-    return nb_joueur
-
-
-# fonction qui affiche le menu de la taille du plateau
-def afficher_menu_taille_plateau(fenetre):
-    # Clear fenetre
-    fenetre.fill(noir)
-
-    # Affichage des textes
-    affiche_text(fenetre, 250, 100, blanc, "Bienvenue sur Quoridor")
-    affiche_text(fenetre, 250, 200, blanc, "Choississez la taille du plateau")
-
-
-
-    # on dessine les 4 boutons
-    creation_bouton(fenetre, 100, 300, 100, 100, gris, blanc, "5 x 5", True)
-    creation_bouton(fenetre, 500, 300, 100, 100, gris, blanc, "7 x 7", True)
-    creation_bouton(fenetre, 100, 450, 100, 100, gris, blanc, "9 x 9", True)
-    creation_bouton(fenetre, 500, 450, 100, 100, gris, blanc, "11 x 11", True)
-    time.sleep(0.1)
-    pygame.display.flip()
-
-    taille_plateau = 0
-    while taille_plateau == 0:
-        ev = pygame.event.poll()
-        # si on clique sur un bouton
-        if pygame.mouse.get_pressed()[0]:
-            pos = pygame.mouse.get_pos()
-            if pos[0] > 100 and pos[0] < 200 and pos[1] > 300 and pos[1] < 400:
-                taille_plateau = 5
-            if pos[0] > 500 and pos[0] < 600 and pos[1] > 300 and pos[1] < 400:
-                taille_plateau = 7
-            if pos[0] > 100 and pos[0] < 200 and pos[1] > 450 and pos[1] < 550:
-                taille_plateau = 9
-            if pos[0] > 500 and pos[0] < 600 and pos[1] > 450 and pos[1] < 550:
-                taille_plateau = 11
-    # pygame.quit()
-    return taille_plateau
 
 # Fonction qui affiche la confirmation de choix
 def afficher_confirmation_choix(fenetre, nb_joueur, taille_plateau, mode_jeu):
@@ -140,6 +67,7 @@ def afficher_confirmation_choix(fenetre, nb_joueur, taille_plateau, mode_jeu):
     affiche_text(fenetre, 15, 425, blanc, "Mode de jeu : " + str(mode_jeu))
     creation_bouton(fenetre, 250, 500, 100, 100, gris, blanc, "Valider", True)
     creation_bouton(fenetre, 400, 500, 100, 100, gris, blanc, "Retour", True)
+    time.sleep(0.1)
     pygame.display.flip()
 
     choix_fait = 0
@@ -149,11 +77,12 @@ def afficher_confirmation_choix(fenetre, nb_joueur, taille_plateau, mode_jeu):
         if pygame.mouse.get_pressed()[0]:
             pos = pygame.mouse.get_pos()
             if pos[0] > 250 and pos[0] < 350 and pos[1] > 500 and pos[1] < 600:
-                choix_fait = True
+                choix_fait = 1
+                retour = True
             if pos[0] > 400 and pos[0] < 500 and pos[1] > 500 and pos[1] < 600:
-                choix_fait = False
-    
-    return choix_fait
+                choix_fait = 1
+                retour = False
+    return retour
 
 
 # Fonction qui affiche les choix pour le mode de jeu et retourne les choix sous forme de liste
@@ -182,42 +111,72 @@ def afficher_menu_jeu(fenetre):
     creation_bouton(fenetre, 400, 375, 100, 115, gris, blanc, "Vs Humain", True)
     creation_bouton(fenetre, 600, 375, 100, 115, gris, blanc, "Vs Bot (2J)", True)
 
-    creation_bouton(fenetre, 350, 500, 80, 200, vert, blanc, "Lancer la partie", True)
+    creation_bouton(fenetre, 300, 500, 90, 200, vert, blanc, "Lancer la partie", True)
 
     # Afficher l'écran
+    time.sleep(0.1)
     pygame.display.flip()
-
-    
 
     fin = 0
     taille_plateau = 0
     nb_joueur = 0
     mode_jeu = 0
+
     while fin == 0:
         ev = pygame.event.poll()
         # si on clique sur un bouton
         if pygame.mouse.get_pressed()[0]:
             pos = pygame.mouse.get_pos()
-            if pos[0] > 400 and pos[0] < 490 and pos[1] > 250 and pos[1] < 540:
+            if pos[0] > 400 and pos[0] < 490 and pos[1] > 250 and pos[1] < 340:
+                print("5")
                 taille_plateau = 5
-            if pos[0] > 500 and pos[0] < 590 and pos[1] > 250 and pos[1] < 540:
+                print("taille_plateau")
+                print(taille_plateau)
+            if pos[0] > 500 and pos[0] < 590 and pos[1] > 250 and pos[1] < 340:
+                print("7")
                 taille_plateau = 7
-            if pos[0] > 600 and pos[0] < 690 and pos[1] > 250 and pos[1] < 540:
+                print("taille_plateau")
+                print(taille_plateau)
+            if pos[0] > 600 and pos[0] < 690 and pos[1] > 250 and pos[1] < 340:
+                print("9")
                 taille_plateau = 9
-            if pos[0] > 700 and pos[0] < 790 and pos[1] > 250 and pos[1] < 540:
+                print("taille_plateau")
+                print(taille_plateau)
+            if pos[0] > 700 and pos[0] < 790 and pos[1] > 250 and pos[1] < 340:
+                print("11")
                 taille_plateau = 11
+                print("taille_plateau")
+                print(taille_plateau)
             
             if pos[0] > 470 and pos[0] < 570 and pos[1] > 105 and pos[1] < 205:
+                print("2")
                 nb_joueur = 2
+                print("nb_joueur")
+                print(nb_joueur)
             if pos[0] > 600 and pos[0] < 700 and pos[1] > 105 and pos[1] < 205:
+                print("4")
                 nb_joueur = 4
+                print("nb_joueur")
+                print(nb_joueur)
             
             if pos[0] > 400 and pos[0] < 500 and pos[1] > 375 and pos[1] < 490:
+                print("Humain")
                 mode_jeu = 1
+                print("mode_jeu")
+                print(mode_jeu)
             if pos[0] > 600 and pos[0] < 700 and pos[1] > 375 and pos[1] < 490:
+                print("Bot")
                 mode_jeu = 2
+                print("mode_jeu")
+                print(mode_jeu)
 
-            if pos[0] > 350 and pos[0] < 430 and pos[1] > 500 and pos[1] < 700:
+            print ("----------")
+            print (mode_jeu)
+            print (nb_joueur)
+            print (taille_plateau)
+            print ("----------")
+
+            if pos[0] > 300 and pos[0] < 500 and pos[1] > 500 and pos[1] < 590:
                 if taille_plateau != 0 and nb_joueur != 0 and mode_jeu != 0:
                     fin = 1
     # pygame.quit()
