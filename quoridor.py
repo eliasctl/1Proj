@@ -5,6 +5,7 @@
 # Importation des libraries
 import pygame
 import sys
+import random
 from func import *
 from pygame import mixer
 
@@ -31,7 +32,7 @@ class Joueur:
                                               Quadrillage_dy+Qpas_y*(indy-0.5)-Quad_mur/2), Qpas_x/3, 0)
 
     # Déplacement du joueur
-    def deplacer(self, fenetre, nb_joueur, taille_plateau):
+    def deplacer(self, fenetre, nb_joueur, taille_plateau , bot = False):
         deplace_possible = []
 
         # Vérification des murs
@@ -218,29 +219,37 @@ class Joueur:
                             deplace_possible.append((self.x, self.y+2))
         pygame.display.flip()
 
-        # Attente du clic du joueur
-        while True:
-            ev = pygame.event.poll()
+        if not bot :
+            # Attente du clic du joueur
+            while True:
+                ev = pygame.event.poll()
 
-            # Evennement de clic
-            if pygame.mouse.get_pressed()[0]:
-                pos = pygame.mouse.get_pos()
-                # Son du clic
-                click = pygame.mixer.Sound("Click.mp3")
-                click.set_volume(0.5)
-                click.play()
+                # Evennement de clic
+                if pygame.mouse.get_pressed()[0]:
+                    pos = pygame.mouse.get_pos()
+                    # Son du clic
+                    click = pygame.mixer.Sound("Click.mp3")
+                    click.set_volume(0.5)
+                    click.play()
 
-                if pos[0] > Quadrillage_dx and pos[0] < Quadrillage_dx+Quadrillage_lX and pos[1] > Quadrillage_dy and pos[1] < Quadrillage_dy+Quadrillage_ly:
-                    # Récupération de la case cliquée
-                    indx = int((pos[0]-Quadrillage_dx)/Qpas_x)+1
-                    indy = int((pos[1]-Quadrillage_dy)/Qpas_y)+1
+                    if pos[0] > Quadrillage_dx and pos[0] < Quadrillage_dx+Quadrillage_lX and pos[1] > Quadrillage_dy and pos[1] < Quadrillage_dy+Quadrillage_ly:
+                        # Récupération de la case cliquée
+                        indx = int((pos[0]-Quadrillage_dx)/Qpas_x)+1
+                        indy = int((pos[1]-Quadrillage_dy)/Qpas_y)+1
 
-                    # Vérification que la case cliquée est dans le tableau
-                    if (indx, indy) in deplace_possible:
-                        # Déplacement du joueur
-                        self.x = indx
-                        self.y = indy
-                        break
+                        # Vérification que la case cliquée est dans le tableau
+                        if (indx, indy) in deplace_possible:
+                            # Déplacement du joueur
+                            self.x = indx
+                            self.y = indy
+                            break
+        else :
+
+            # Pause de 1 s pour laisser le temps au joueur de voir le déplacement du bot
+            pygame.time.wait(1000)
+
+            # Déplacement du bot de maniere aléatoire
+            self.x, self.y = deplace_possible[random.randint(0, len(deplace_possible)-1)]
 
     # Fonction pour poser un mur vertical
     def poser_murV(self, fenetre, tableauMurV, taille_plateau):
@@ -310,71 +319,71 @@ class Joueur:
                                     mur_choisi = True
                                     break
 
-    # Fonction pour poser un mur horizontal
-    def poser_murH(self, fenetre, tableauMurH, taille_plateau):
-        # Initialisation d'un tableau avec les coordonnées des murs possibles
-        mur_possible = [[False for i in range(taille_plateau-1)] for j in range(taille_plateau-1)]
-        # Son du bouton mur horizontal
-        click = pygame.mixer.Sound("Click.mp3")
-        click.set_volume(0.5)
-        click.play()
+# Fonction pour poser un mur horizontal
+def poser_murH(self, fenetre, tableauMurH, taille_plateau):
+    # Initialisation d'un tableau avec les coordonnées des murs possibles
+    mur_possible = [[False for i in range(taille_plateau-1)] for j in range(taille_plateau-1)]
+    # Son du bouton mur horizontal
+    click = pygame.mixer.Sound("Click.mp3")
+    click.set_volume(0.5)
+    click.play()
 
-       # Affichage des milieux de murs possibles
-        for i in range(taille_plateau-1):
+    # Affichage des milieux de murs possibles
+    for i in range(taille_plateau-1):
 
-            for j in range(taille_plateau-1):
+        for j in range(taille_plateau-1):
 
-                if tableauMurH[i][j] == 0 and tableauMurV[i][j] == 0:
+            if tableauMurH[i][j] == 0 and tableauMurV[i][j] == 0:
 
-                    if i > 0:  # Si le murs n'est pas sur la premiere colonne
+                if i > 0:  # Si le murs n'est pas sur la premiere colonne
 
-                        if i < taille_plateau-2:  # Si le mur n'est pas sur la derniere colonne
+                    if i < taille_plateau-2:  # Si le mur n'est pas sur la derniere colonne
 
-                            # Si il n'y a pas de mur à gauche et à droite
-                            if tableauMurH[i-1][j] == 0 and tableauMurH[i+1][j] == 0:
-                                pygame.draw.circle(fenetre, blanc, (Quadrillage_dx+Qpas_x*(
-                                    i+1)-Quad_mur/2, Quadrillage_dy+Qpas_y*(j+1)-Quad_mur/2), 6, 0)
-                                mur_possible[i][j] = True
-
-                        else:  # Si on est sur la derniere colonne
-
-                            if tableauMurH[i-1][j] == 0:
-                                pygame.draw.circle(fenetre, blanc, (Quadrillage_dx+Qpas_x*(
-                                    i+1)-Quad_mur/2, Quadrillage_dy+Qpas_y*(j+1)-Quad_mur/2), 6, 0)
-                                mur_possible[i][j] = True
-                    else:  # Si on est sur la premiere colonne
-                        if tableauMurH[i+1][j] == 0:
+                        # Si il n'y a pas de mur à gauche et à droite
+                        if tableauMurH[i-1][j] == 0 and tableauMurH[i+1][j] == 0:
                             pygame.draw.circle(fenetre, blanc, (Quadrillage_dx+Qpas_x*(
                                 i+1)-Quad_mur/2, Quadrillage_dy+Qpas_y*(j+1)-Quad_mur/2), 6, 0)
                             mur_possible[i][j] = True
 
-        pygame.display.flip()
+                    else:  # Si on est sur la derniere colonne
 
-        mur_choisi = False  # Attente que le joueur clique sur un neoud de mur
+                        if tableauMurH[i-1][j] == 0:
+                            pygame.draw.circle(fenetre, blanc, (Quadrillage_dx+Qpas_x*(
+                                i+1)-Quad_mur/2, Quadrillage_dy+Qpas_y*(j+1)-Quad_mur/2), 6, 0)
+                            mur_possible[i][j] = True
+                else:  # Si on est sur la premiere colonne
+                    if tableauMurH[i+1][j] == 0:
+                        pygame.draw.circle(fenetre, blanc, (Quadrillage_dx+Qpas_x*(
+                            i+1)-Quad_mur/2, Quadrillage_dy+Qpas_y*(j+1)-Quad_mur/2), 6, 0)
+                        mur_possible[i][j] = True
 
-        while mur_choisi == False:
-            ev = pygame.event.poll()
+    pygame.display.flip()
 
-            # Evennement de clic
-            if pygame.mouse.get_pressed()[0]:
-                pos = pygame.mouse.get_pos()
+    mur_choisi = False  # Attente que le joueur clique sur un neoud de mur
 
-                if pos[0] > Quadrillage_dx and pos[0] < Quadrillage_dx+Quadrillage_lX and pos[1] > Quadrillage_dy and pos[1] < Quadrillage_dy+Quadrillage_ly:
+    while mur_choisi == False:
+        ev = pygame.event.poll()
 
-                    # Récupération de la case cliquée
-                    for i in range(taille_plateau-1):
+        # Evennement de clic
+        if pygame.mouse.get_pressed()[0]:
+            pos = pygame.mouse.get_pos()
 
-                        for j in range(taille_plateau-1):
+            if pos[0] > Quadrillage_dx and pos[0] < Quadrillage_dx+Quadrillage_lX and pos[1] > Quadrillage_dy and pos[1] < Quadrillage_dy+Quadrillage_ly:
 
-                            if tableauMurH[i][j] == 0 and tableauMurV[i][j] == 0 and mur_possible[i][j] == True:
-                                distance = (Quadrillage_dx+Qpas_x*(i+1)-Quad_mur/2-pos[0])**2+(
-                                    Quadrillage_dy+Qpas_y*(j+1)-Quad_mur/2-pos[1])**2
+                # Récupération de la case cliquée
+                for i in range(taille_plateau-1):
 
-                                if distance < 36:
-                                    # print("poser murH")
-                                    tableauMurH[i][j] = self.couleur
-                                    mur_choisi = True
-                                    break
+                    for j in range(taille_plateau-1):
+
+                        if tableauMurH[i][j] == 0 and tableauMurV[i][j] == 0 and mur_possible[i][j] == True:
+                            distance = (Quadrillage_dx+Qpas_x*(i+1)-Quad_mur/2-pos[0])**2+(
+                                Quadrillage_dy+Qpas_y*(j+1)-Quad_mur/2-pos[1])**2
+
+                            if distance < 36:
+                                # print("poser murH")
+                                tableauMurH[i][j] = self.couleur
+                                mur_choisi = True
+                                break
 
 
 # Programme principal
@@ -481,3 +490,100 @@ if choix_jeu[2] == 1:
 
         # Pause de 1 s pour éviter de surcharger le processeur
         pygame.time.wait(1)
+
+# Jeu avec bot
+else:
+
+    # Boucle de jeu
+    partie_finie = False
+    nb_coups = 0
+
+    while not partie_finie:
+        nb_coups += 1
+        for i in range(nb_joueur):
+            if i == 0:
+                # Initialisation du plateau et des données
+                affichage_plateau(fenetre_jeu, nb_joueur, taille_plateau,
+                                joueurs, i, tableauMurH, tableauMurV)
+                pygame.display.flip()
+
+                while True:
+                    # Test de sortie
+                    ev = pygame.event.poll()
+                    if ev.type == pygame.KEYDOWN and ev.key == pygame.K_ESCAPE:
+                        pygame.quit()
+
+                    if ev.type == pygame.QUIT:
+                        pygame.quit()
+
+                    # Evennement de clic sur un bouton
+                    if pygame.mouse.get_pressed()[0]:
+                        pos = pygame.mouse.get_pos()
+
+                        # Clic sur le bouton de déplacement (400, 510, 150, 150)
+                        if pos[0] > 400 and pos[0] < 550 and pos[1] > 510 and pos[1] < 660:
+                            joueurs[i].deplacer(fenetre_jeu, nb_joueur, taille_plateau)
+                            pygame.display.flip()
+                            break
+
+                        # Clic sur le bouton de pose de mur vertical (615, 150, 50, 165)
+                        if pos[0] > 615 and pos[0] < 780 and pos[1] > 150 and pos[1] < 200:
+                            joueurs[i].poser_murV(
+                                fenetre_jeu, tableauMurV, taille_plateau)
+                            pygame.display.flip()
+                            break
+
+                        # Clic sur le bouton de pose de mur horizontal (615, 300, 50, 165)
+                        if pos[0] > 615 and pos[0] < 780 and pos[1] > 300 and pos[1] < 350:
+                            joueurs[i].poser_murH(
+                                fenetre_jeu, tableauMurH, taille_plateau)
+                            pygame.display.flip()
+                            break
+
+                # Test de victoire
+                if victoire(joueurs[i].x, joueurs[i].y, taille_plateau, joueurs[i].couleur) == True:
+
+                    # Recupération du chemin vers python
+                    python = sys.executable
+
+                    # Affichage de la victoire avec possibilité de relancer la partie
+                    afficher_victoire(fenetre_jeu, joueurs[i].couleur, nb_coups, python, sys.argv)
+
+                    # Sortie de la boucle de jeu
+                    partie_finie = True
+                    break
+
+            # Pause de 1 s pour éviter de surcharger le processeur
+            pygame.time.wait(1)
+    
+        # Tour du bot
+        if partie_finie == False:
+            # Initialisation du plateau et des données
+            affichage_plateau(fenetre_jeu, nb_joueur, taille_plateau,
+                            joueurs, i, tableauMurH, tableauMurV, True)
+            pygame.display.flip()
+
+            # Déplacement du bot
+            joueurs[i].deplacer(fenetre_jeu, nb_joueur, taille_plateau, True)
+            pygame.display.flip()
+
+            # Test de victoire
+            if victoire(joueurs[i].x, joueurs[i].y, taille_plateau, joueurs[i].couleur) == True:
+
+                # Recupération du chemin vers python
+                python = sys.executable
+
+                # ajout du son de victoire
+                pygame.mixer.music.load("Victory.mp3")
+                pygame.mixer.music.set_volume(0.5)
+                pygame.mixer.music.play()
+
+                # Affichage de la victoire avec possibilité de relancer la partie
+                afficher_victoire(fenetre_jeu, joueurs[i].couleur, nb_coups, python, sys.argv, bot = True)
+
+                # Sortie de la boucle de jeu
+                partie_finie = True
+                break
+
+            # Pause de 1 s pour éviter de surcharger le processeur
+            pygame.time.wait(1000)

@@ -303,7 +303,7 @@ def afficher_menu_jeu(fenetre):
 
 
 # Affichage du plateau de jeu
-def affichage_plateau(fenetre, nb_joueur, taille_plateau, joueur, joueur_actif, tableauMurH, tableauMurV):
+def affichage_plateau(fenetre, nb_joueur, taille_plateau, joueur, joueur_actif, tableauMurH, tableauMurV, bot = False):
     
     # Clear fenetre
     fenetre.fill(noir)
@@ -312,10 +312,16 @@ def affichage_plateau(fenetre, nb_joueur, taille_plateau, joueur, joueur_actif, 
     Qpas_x = Quadrillage_lX / taille_plateau
     Qpas_y = Quadrillage_ly / taille_plateau
 
-    # Affichage des textes
-    affiche_text(fenetre, 250, 30, joueur[joueur_actif].couleur,
-                 "Joueur en cours : Joueur "+str(joueur_actif+1))
+    if bot == False:
+        # Affichage des textes
+        affiche_text(fenetre, 250, 30, joueur[joueur_actif].couleur,
+                    "Joueur en cours : Joueur "+str(joueur_actif+1))
 
+    else :
+        # Affichage des textes
+        affiche_text(fenetre, 250, 30, joueur[joueur_actif].couleur,
+                    "Joueur en cours : Bot")
+        
     # Affichage du quadrillage
     for i in range(taille_plateau):
         for j in range(taille_plateau):
@@ -332,14 +338,15 @@ def affichage_plateau(fenetre, nb_joueur, taille_plateau, joueur, joueur_actif, 
                 creation_bouton(fenetre, Quadrillage_dx+Qpas_x*i, Quadrillage_dy +
                                 Qpas_y*(j+1), Quad_mur, 2*Qpas_x, tableauMurH[i][j], tableauMurH[i][j], "", False)  # mur horizontal
 
-   # Affichage des boutons (pour le deplacement ou le placement de mur)
-    creation_bouton(fenetre, 400, 510, 50, 150,
-                    gris, blanc, "Se Deplacer", True)
+    if bot == False:
+        # Affichage des boutons (pour le deplacement ou le placement de mur)
+        creation_bouton(fenetre, 400, 510, 50, 150,
+                        gris, blanc, "Se Deplacer", True)
 
-    creation_bouton(fenetre, 615, 150, 50, 165, gris,
-                    blanc, "mur Vertical", True)
-    creation_bouton(fenetre, 615, 300, 50, 165, gris,
-                    blanc, "mur Horizontal", True)
+        creation_bouton(fenetre, 615, 150, 50, 165, gris,
+                        blanc, "mur Vertical", True)
+        creation_bouton(fenetre, 615, 300, 50, 165, gris,
+                        blanc, "mur Horizontal", True)
 
     # Affichage des joueurs
     joueur[0].affichage_joueur(fenetre, joueur[0].couleur,
@@ -387,7 +394,7 @@ def victoire(x, y, taille_plateau, couleur):
         
 
 # Affichage de la page de victoire
-def afficher_victoire(fenetre, joueur_actif, nb_coups, python, sys_argv):
+def afficher_victoire(fenetre, joueur_actif, nb_coups, python, sys_argv, bot = False):
     
     # Clear fenetre
     fenetre.fill(noir)
@@ -395,20 +402,32 @@ def afficher_victoire(fenetre, joueur_actif, nb_coups, python, sys_argv):
     # Agrrandissement de la fenetre pour afficher le texte
     fenetre = pygame.display.set_mode((800, 700))
     
-    # On récupère le nom du joueur actif
-    if joueur_actif == rouge:
-        joueur_actif = "rouge"
-    elif joueur_actif == bleu:
-        joueur_actif = "bleu"
-    elif joueur_actif == violet:
-        joueur_actif = "violet"
-    elif joueur_actif == vert:
-        joueur_actif = "vert"
-
-    # Affichage des textes
-    affiche_text(fenetre, 250, 100, blanc, "Victoire du joueur "+str(joueur_actif))
-    affiche_text(fenetre, 250, 200, blanc, "Félicitation !")
+    # ajout du son de victoire
+    pygame.mixer.music.load("Victory.mp3")
+    pygame.mixer.music.set_volume(0.5)
+    pygame.mixer.music.play()
     
+    if bot == False:
+        # On récupère le nom du joueur actif
+        if joueur_actif == rouge:
+            joueur_actif = "rouge"
+        elif joueur_actif == bleu:
+            joueur_actif = "bleu"
+        elif joueur_actif == violet:
+            joueur_actif = "violet"
+        elif joueur_actif == vert:
+            joueur_actif = "vert"
+
+        # Affichage des textes
+        affiche_text(fenetre, 250, 100, blanc, "Victoire du joueur "+str(joueur_actif))
+        affiche_text(fenetre, 250, 200, blanc, "Félicitation !")
+    
+    else:
+        # Affichage des textes
+        affiche_text(fenetre, 250, 100, blanc, "Victoire du bot")
+        affiche_text(fenetre, 250, 200, blanc, "Vous avez perdu !")
+
+
     # Affichage du nombre de coups
     affiche_text(fenetre, 250, 300, blanc, "Nombre de coups : "+str(nb_coups))
 
@@ -418,6 +437,7 @@ def afficher_victoire(fenetre, joueur_actif, nb_coups, python, sys_argv):
 
     pygame.display.flip()
 
+    pygame.time.wait(2000)
     # Attente du choix de l'utilisateur
     while True:
         # test de sortie
