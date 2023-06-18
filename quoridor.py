@@ -7,7 +7,7 @@ import pygame
 import sys
 from func import *
 from pygame import mixer
-    
+
 
 # Mise en place la musique
 mixer.init()
@@ -16,6 +16,8 @@ mixer.music.set_volume(0.5)
 mixer.music.play(-1)
 
 # Initialisation de la classe joueur
+
+
 class Joueur:
     def __init__(self, x, y, couleur, nb_murs):
         self.x = x
@@ -60,7 +62,7 @@ class Joueur:
                 elif self.x > 2:
                     presence_mur_case2 = False
 
-                    if tableauMurV[int(self.x-2)][int(self.y)] == 0 and tableauMurV[int(self.x-2)][int(self.y-1)] == 0:
+                    if tableauMurV[int(self.x-2)][int(self.y)] != 0 or tableauMurV[int(self.x-2)][int(self.y-1)] != 0:
                         presence_mur_case2 = True
 
                     if not presence_mur_case2:
@@ -106,7 +108,7 @@ class Joueur:
                 elif self.x+2 < taille_plateau:
                     presence_mur_case2 = False
 
-                    if tableauMurV[int(self.x+1)][int(self.y)] == 0 and tableauMurV[int(self.x+1)][int(self.y-1)] == 0:
+                    if tableauMurV[int(self.x+1)][int(self.y)] != 0 or tableauMurV[int(self.x+1)][int(self.y-1)] != 0:
                         presence_mur_case2 = True
 
                     if not presence_mur_case2:
@@ -151,7 +153,7 @@ class Joueur:
                 elif self.y-2 > 0:
                     presence_mur_case2 = False
 
-                    if tableauMurV[int(self.x)][int(self.y-2)] == 0 and tableauMurV[int(self.x-1)][int(self.y-2)] == 0:
+                    if tableauMurV[int(self.x)][int(self.y-2)] != 0 or tableauMurV[int(self.x-1)][int(self.y-2)] != 0:
                         presence_mur_case2 = True
 
                     if not presence_mur_case2:
@@ -168,7 +170,7 @@ class Joueur:
                             deplace_possible.append((self.x, self.y-2))
 
         # Vérification des murs
-        if self.y < taille_plateau: # Si le joueur n'est pas sur la derniere colonne déplacement vers le bas
+        if self.y < taille_plateau:  # Si le joueur n'est pas sur la derniere colonne déplacement vers le bas
             presence_mur = False
 
             if self.x > 1:
@@ -199,7 +201,7 @@ class Joueur:
                 elif self.y+2 < taille_plateau:
                     presence_mur_case2 = False
 
-                    if tableauMurV[int(self.x)][int(self.y+1)] == 0 and tableauMurV[int(self.x-1)][int(self.y+1)] == 0:
+                    if tableauMurV[int(self.x)][int(self.y+1)] != 0 or tableauMurV[int(self.x-1)][int(self.y+1)] != 0:
                         presence_mur_case2 = True
 
                     if not presence_mur_case2:
@@ -260,7 +262,7 @@ class Joueur:
                     if j > 0:  # Si le murs n'est pas sur la premiere ligne
 
                         if j < taille_plateau-2:  # Si le mur n'est pas sur la derniere ligne
-                            
+
                             # Si il n'y a pas de mur au dessus et en dessous
                             if tableauMurV[i][j-1] == 0 and tableauMurV[i][j+1] == 0:
                                 pygame.draw.circle(fenetre, blanc, (Quadrillage_dx+Qpas_x*(
@@ -293,7 +295,7 @@ class Joueur:
                 pos = pygame.mouse.get_pos()
 
                 if pos[0] > Quadrillage_dx and pos[0] < Quadrillage_dx+Quadrillage_lX and pos[1] > Quadrillage_dy and pos[1] < Quadrillage_dy+Quadrillage_ly:
-                    
+
                     # Récupération de la case cliquée
                     for i in range(taille_plateau-1):
 
@@ -302,13 +304,13 @@ class Joueur:
                             if tableauMurV[i][j] == 0 and tableauMurH[i][j] == 0 and mur_possible[i][j] == True:
                                 distance = (Quadrillage_dx+Qpas_x*(i+1)-Quad_mur/2-pos[0])**2+(
                                     Quadrillage_dy+Qpas_y*(j+1)-Quad_mur/2-pos[1])**2
-                                
+
                                 if distance < 36:
                                     tableauMurV[i][j] = self.couleur
                                     mur_choisi = True
                                     break
 
-    # Fonction pour poser un mur horizontal                                
+    # Fonction pour poser un mur horizontal
     def poser_murH(self, fenetre, tableauMurH, taille_plateau):
         # Initialisation d'un tableau avec les coordonnées des murs possibles
         mur_possible = [[False for i in range(
@@ -327,21 +329,21 @@ class Joueur:
 
                     if i > 0:  # Si le murs n'est pas sur la premiere colonne
 
-                        if i < taille_plateau-2: # Si le mur n'est pas sur la derniere colonne
-                                
+                        if i < taille_plateau-2:  # Si le mur n'est pas sur la derniere colonne
+
                             # Si il n'y a pas de mur à gauche et à droite
                             if tableauMurH[i-1][j] == 0 and tableauMurH[i+1][j] == 0:
                                 pygame.draw.circle(fenetre, blanc, (Quadrillage_dx+Qpas_x*(
                                     i+1)-Quad_mur/2, Quadrillage_dy+Qpas_y*(j+1)-Quad_mur/2), 6, 0)
                                 mur_possible[i][j] = True
 
-                        else: # Si on est sur la derniere colonne
-                             
+                        else:  # Si on est sur la derniere colonne
+
                             if tableauMurH[i-1][j] == 0:
                                 pygame.draw.circle(fenetre, blanc, (Quadrillage_dx+Qpas_x*(
                                     i+1)-Quad_mur/2, Quadrillage_dy+Qpas_y*(j+1)-Quad_mur/2), 6, 0)
                                 mur_possible[i][j] = True
-                    else: # Si on est sur la premiere colonne
+                    else:  # Si on est sur la premiere colonne
                         if tableauMurH[i+1][j] == 0:
                             pygame.draw.circle(fenetre, blanc, (Quadrillage_dx+Qpas_x*(
                                 i+1)-Quad_mur/2, Quadrillage_dy+Qpas_y*(j+1)-Quad_mur/2), 6, 0)
@@ -349,7 +351,7 @@ class Joueur:
 
         pygame.display.flip()
 
-        mur_choisi = False # Attente que le joueur clique sur un neoud de mur
+        mur_choisi = False  # Attente que le joueur clique sur un neoud de mur
 
         while mur_choisi == False:
             ev = pygame.event.poll()
@@ -359,7 +361,7 @@ class Joueur:
                 pos = pygame.mouse.get_pos()
 
                 if pos[0] > Quadrillage_dx and pos[0] < Quadrillage_dx+Quadrillage_lX and pos[1] > Quadrillage_dy and pos[1] < Quadrillage_dy+Quadrillage_ly:
-                    
+
                     # Récupération de la case cliquée
                     for i in range(taille_plateau-1):
 
@@ -368,7 +370,7 @@ class Joueur:
                             if tableauMurH[i][j] == 0 and tableauMurV[i][j] == 0 and mur_possible[i][j] == True:
                                 distance = (Quadrillage_dx+Qpas_x*(i+1)-Quad_mur/2-pos[0])**2+(
                                     Quadrillage_dy+Qpas_y*(j+1)-Quad_mur/2-pos[1])**2
-                                
+
                                 if distance < 36:
                                     # print("poser murH")
                                     tableauMurH[i][j] = self.couleur
@@ -416,8 +418,8 @@ else:
 
 # Boucle de jeu
 
-partie_finie = False # Variable pour savoir si la partie est finie
-nb_coups = 0 # Variable pour compter le nombre de coups
+partie_finie = False  # Variable pour savoir si la partie est finie
+nb_coups = 0  # Variable pour compter le nombre de coups
 
 while not partie_finie:
     nb_coups += 1
@@ -461,18 +463,19 @@ while not partie_finie:
                     break
 
         # Test de victoire
-        if victoire(joueurs[i].x, joueurs[i].y, taille_plateau, joueurs[i].couleur)==True:
+        if victoire(joueurs[i].x, joueurs[i].y, taille_plateau, joueurs[i].couleur) == True:
 
             # Recupération du chemin vers python
             python = sys.executable
 
-            #ajout du son de victoire
+            # ajout du son de victoire
             pygame.mixer.music.load("Victory.mp3")
             pygame.mixer.music.set_volume(0.5)
             pygame.mixer.music.play()
 
             # Affichage de la victoire avec possibilité de relancer la partie
-            afficher_victoire(fenetre_jeu, joueurs[i].couleur, nb_coups, python, sys.argv)
+            afficher_victoire(
+                fenetre_jeu, joueurs[i].couleur, nb_coups, python, sys.argv)
 
             # Sortie de la boucle de jeu
             partie_finie = True
@@ -480,7 +483,3 @@ while not partie_finie:
 
     # Pause de 1ms pour éviter de surcharger le processeur
     pygame.time.wait(1)
-
-
-
-
