@@ -12,7 +12,7 @@ from pygame import mixer
 # Mise en place la musique
 mixer.init()
 mixer.music.load('Bloons TD battles music Monkeys and Bloons!.mp3')
-mixer.music.set_volume(1)
+mixer.music.set_volume(0.5)
 mixer.music.play(-1)
 
 # Initialisation de la classe joueur
@@ -223,6 +223,10 @@ class Joueur:
             # Evennement de clic
             if pygame.mouse.get_pressed()[0]:
                 pos = pygame.mouse.get_pos()
+                # Son du clic
+                click = pygame.mixer.Sound("Click.mp3")
+                click.set_volume(0.5)
+                click.play()
 
                 if pos[0] > Quadrillage_dx and pos[0] < Quadrillage_dx+Quadrillage_lX and pos[1] > Quadrillage_dy and pos[1] < Quadrillage_dy+Quadrillage_ly:
                     # Récupération de la case cliquée
@@ -241,6 +245,10 @@ class Joueur:
         # Initialisation d'un tableau avec les coordonnées des murs possibles
         mur_possible = [[False for i in range(
             taille_plateau-1)] for j in range(taille_plateau-1)]
+        # son pour bouton mur
+        click = pygame.mixer.Sound("Click.mp3")
+        click.set_volume(0.5)
+        click.play()
 
         # Affichage des milieux de murs possibles
         for i in range(taille_plateau-1):
@@ -305,6 +313,10 @@ class Joueur:
         # Initialisation d'un tableau avec les coordonnées des murs possibles
         mur_possible = [[False for i in range(
             taille_plateau-1)] for j in range(taille_plateau-1)]
+        # Son du bouton mur horizontal
+        click = pygame.mixer.Sound("Click.mp3")
+        click.set_volume(0.5)
+        click.play()
 
        # Affichage des milieux de murs possibles
         for i in range(taille_plateau-1):
@@ -453,6 +465,11 @@ while not partie_finie:
 
             # Recupération du chemin vers python
             python = sys.executable
+
+            #ajout du son de victoire
+            pygame.mixer.music.load("Victory.mp3")
+            pygame.mixer.music.set_volume(0.5)
+            pygame.mixer.music.play()
 
             # Affichage de la victoire avec possibilité de relancer la partie
             afficher_victoire(fenetre_jeu, joueurs[i].couleur, nb_coups, python, sys.argv)

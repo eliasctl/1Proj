@@ -84,6 +84,10 @@ def afficher_confirmation_choix(fenetre, nb_joueur, taille_plateau, mode_jeu):
 
         # Evennement de clic sur un bouton
         if pygame.mouse.get_pressed()[0]:
+            # Sons pour les boutons
+            click = pygame.mixer.Sound("Click.mp3")
+            click.set_volume(0.5)
+            click.play()
             pos = pygame.mouse.get_pos()
             if pos[0] > 250 and pos[0] < 350 and pos[1] > 500 and pos[1] < 600:
                 choix_fait = 1
@@ -144,6 +148,10 @@ def afficher_menu_jeu(fenetre):
 
         # Evennement de clic sur un bouton
         if pygame.mouse.get_pressed()[0]:
+            # Sons pour les boutons
+            click = pygame.mixer.Sound("Click.mp3")
+            click.set_volume(0.5)
+            click.play()
             pos = pygame.mouse.get_pos()
             if pos[0] > 400 and pos[0] < 490 and pos[1] > 250 and pos[1] < 340:
                 print("5")
@@ -197,6 +205,8 @@ def afficher_menu_jeu(fenetre):
             if pos[0] > 300 and pos[0] < 500 and pos[1] > 500 and pos[1] < 590:
                 if taille_plateau != 0 and nb_joueur != 0 and mode_jeu != 0:
                     fin = 1
+            
+        
 
     # Ajout des paramètres à la liste
     liste_choix.append(nb_joueur)
