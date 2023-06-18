@@ -33,7 +33,7 @@ Quad_mur = 5  # largeur des murs du quadrillage
 
 # Fonction qui affiche la page principale
 def cree_page_principale():
-    screen = pygame.display.set_mode((800, 600))
+    screen = pygame.display.set_mode((800, 650))
     pygame.display.set_caption("Quoridor")  # titre de la fenetre
     return screen
 
@@ -236,15 +236,19 @@ def afficher_menu_jeu(fenetre):
             if pos[0] > 600 and pos[0] < 700 and pos[1] > 105 and pos[1] < 205:
                 # 4 joueurs
                 nb_joueur = 4
+                mode_jeu = 1
 
                 # Suprresion des anciens bouttons
                 pygame.draw.rect(fenetre, noir, (470, 105, 130, 100))
+                pygame.draw.rect(fenetre, noir, (400, 375, 200, 115))
 
                 # Update du bouton pour qu'il devienne bleu
                 creation_bouton(fenetre, 600, 105, 100, 100, bleu, blanc, "4 joueurs", True)
+                creation_bouton(fenetre, 400, 375, 100, 115, bleu, blanc, "Vs Humain", True)
 
                 #Changement de couleur de l'aute boutton
                 creation_bouton(fenetre, 470, 105, 100, 100, gris, blanc, "2 joueurs", True)
+                creation_bouton(fenetre, 600, 375, 100, 115, gris, blanc, "Vs Bot (2J)", True)
 
                 pygame.display.flip()
             if pos[0] > 400 and pos[0] < 500 and pos[1] > 375 and pos[1] < 490:
@@ -264,15 +268,19 @@ def afficher_menu_jeu(fenetre):
             if pos[0] > 600 and pos[0] < 700 and pos[1] > 375 and pos[1] < 490:
                 # Bot
                 mode_jeu = 2
+                nb_joueur = 2
 
                 # Suprresion des anciens bouttons
                 pygame.draw.rect(fenetre, noir, (400, 375, 200, 115))
+                pygame.draw.rect(fenetre, noir, (470, 105, 130, 100))
 
-                # Update du bouton pour qu'il devienne bleu
+                # Update des boutons pour qu'il devienne bleu
                 creation_bouton(fenetre, 600, 375, 100, 115, bleu, blanc, "Vs Bot (2J)", True)
+                creation_bouton(fenetre, 470, 105, 100, 100, bleu, blanc, "2 joueurs", True)
 
                 #Changement de couleur de l'aute boutton    
                 creation_bouton(fenetre, 400, 375, 100, 115, gris, blanc, "Vs Humain", True)
+                creation_bouton(fenetre, 600, 105, 100, 100, gris, blanc, "4 joueurs", True)
 
                 pygame.display.flip()
 

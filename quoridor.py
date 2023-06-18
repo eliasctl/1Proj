@@ -386,10 +386,9 @@ fenetre_jeu = cree_page_principale()
 choix_jeu = afficher_menu_jeu(fenetre_jeu)
 # Nombre de joueurs
 nb_joueur = choix_jeu[0]
-print(nb_joueur)
+
 # Taille du plateau
 taille_plateau = choix_jeu[1]
-print(taille_plateau)
 
 # Initialisation des tableaux de mur
 tableauMurH = initMurTabMur(taille_plateau)
@@ -414,70 +413,71 @@ else:
     joueurs.append(Joueur((taille_plateau+1)/2, taille_plateau, violet, 5))
     joueurs.append(Joueur(1, (taille_plateau+1)/2, vert, 5))
 
+# Jeu classique sans bot
+if choix_jeu[2] == 1:
 
-# Boucle de jeu
+    # Boucle de jeu
+    partie_finie = False  # Variable pour savoir si la partie est finie
+    nb_coups = 0  # Variable pour compter le nombre de coups
 
-partie_finie = False  # Variable pour savoir si la partie est finie
-nb_coups = 0  # Variable pour compter le nombre de coups
+    while not partie_finie:
+        nb_coups += 1
+        for i in range(nb_joueur):
+            # Initialisation du plateau et des données
+            affichage_plateau(fenetre_jeu, nb_joueur, taille_plateau,
+                            joueurs, i, tableauMurH, tableauMurV)
+            pygame.display.flip()
 
-while not partie_finie:
-    nb_coups += 1
-    for i in range(nb_joueur):
-        # Initialisation du plateau et des données
-        affichage_plateau(fenetre_jeu, nb_joueur, taille_plateau,
-                          joueurs, i, tableauMurH, tableauMurV)
-        pygame.display.flip()
+            while True:
+                # Test de sortie
+                ev = pygame.event.poll()
+                if ev.type == pygame.KEYDOWN and ev.key == pygame.K_ESCAPE:
+                    pygame.quit()
 
-        while True:
-            # Test de sortie
-            ev = pygame.event.poll()
-            if ev.type == pygame.KEYDOWN and ev.key == pygame.K_ESCAPE:
-                pygame.quit()
+                if ev.type == pygame.QUIT:
+                    pygame.quit()
 
-            if ev.type == pygame.QUIT:
-                pygame.quit()
+                # Evennement de clic sur un bouton
+                if pygame.mouse.get_pressed()[0]:
+                    pos = pygame.mouse.get_pos()
 
-            # Evennement de clic sur un bouton
-            if pygame.mouse.get_pressed()[0]:
-                pos = pygame.mouse.get_pos()
+                    # Clic sur le bouton de déplacement (400, 510, 150, 150)
+                    if pos[0] > 400 and pos[0] < 550 and pos[1] > 510 and pos[1] < 660:
+                        joueurs[i].deplacer(fenetre_jeu, nb_joueur, taille_plateau)
+                        pygame.display.flip()
+                        break
 
-                # Clic sur le bouton de déplacement (400, 510, 150, 150)
-                if pos[0] > 400 and pos[0] < 550 and pos[1] > 510 and pos[1] < 660:
-                    joueurs[i].deplacer(fenetre_jeu, nb_joueur, taille_plateau)
-                    pygame.display.flip()
-                    break
+                    # Clic sur le bouton de pose de mur vertical (615, 150, 50, 165)
+                    if pos[0] > 615 and pos[0] < 780 and pos[1] > 150 and pos[1] < 200:
+                        joueurs[i].poser_murV(
+                            fenetre_jeu, tableauMurV, taille_plateau)
+                        pygame.display.flip()
+                        break
 
-                # Clic sur le bouton de pose de mur vertical (615, 150, 50, 165)
-                if pos[0] > 615 and pos[0] < 780 and pos[1] > 150 and pos[1] < 200:
-                    joueurs[i].poser_murV(
-                        fenetre_jeu, tableauMurV, taille_plateau)
-                    pygame.display.flip()
-                    break
+                    # Clic sur le bouton de pose de mur horizontal (615, 300, 50, 165)
+                    if pos[0] > 615 and pos[0] < 780 and pos[1] > 300 and pos[1] < 350:
+                        joueurs[i].poser_murH(
+                            fenetre_jeu, tableauMurH, taille_plateau)
+                        pygame.display.flip()
+                        break
+            
+            # Test de victoire
+            if victoire(joueurs[i].x, joueurs[i].y, taille_plateau, joueurs[i].couleur) == True:
 
-                # Clic sur le bouton de pose de mur horizontal (615, 300, 50, 165)
-                if pos[0] > 615 and pos[0] < 780 and pos[1] > 300 and pos[1] < 350:
-                    joueurs[i].poser_murH(
-                        fenetre_jeu, tableauMurH, taille_plateau)
-                    pygame.display.flip()
-                    break
-        
-        # Test de victoire
-        if victoire(joueurs[i].x, joueurs[i].y, taille_plateau, joueurs[i].couleur) == True:
+                # Recupération du chemin vers python
+                python = sys.executable
 
-            # Recupération du chemin vers python
-            python = sys.executable
+                # ajout du son de victoire
+                pygame.mixer.music.load("Victory.mp3")
+                pygame.mixer.music.set_volume(0.5)
+                pygame.mixer.music.play()
 
-            # ajout du son de victoire
-            pygame.mixer.music.load("Victory.mp3")
-            pygame.mixer.music.set_volume(0.5)
-            pygame.mixer.music.play()
+                # Affichage de la victoire avec possibilité de relancer la partie
+                afficher_victoire(fenetre_jeu, joueurs[i].couleur, nb_coups, python, sys.argv)
 
-            # Affichage de la victoire avec possibilité de relancer la partie
-            afficher_victoire(fenetre_jeu, joueurs[i].couleur, nb_coups, python, sys.argv)
+                # Sortie de la boucle de jeu
+                partie_finie = True
+                break
 
-            # Sortie de la boucle de jeu
-            partie_finie = True
-            break
-
-    # Pause de 1 s pour éviter de surcharger le processeur
-    pygame.time.wait(1)
+        # Pause de 1 s pour éviter de surcharger le processeur
+        pygame.time.wait(1)
