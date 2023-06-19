@@ -92,7 +92,7 @@ def afficher_confirmation_choix(fenetre, nb_joueur, taille_plateau, mode_jeu):
         # Evennement de clic sur un bouton
         if pygame.mouse.get_pressed()[0]:
             # Sons pour les boutons
-            click = pygame.mixer.Sound("Click.mp3")
+            click = pygame.mixer.Sound("python/Click.mp3")
             click.set_volume(0.5)
             click.play()
             pos = pygame.mouse.get_pos()
@@ -164,7 +164,7 @@ def afficher_menu_jeu(fenetre):
         if pygame.mouse.get_pressed()[0]:
 
             # Sons pour les boutons
-            click = pygame.mixer.Sound("Click.mp3")
+            click = pygame.mixer.Sound("python/Click.mp3")
             click.set_volume(0.5)
             click.play()
             pygame.time.wait(100)
@@ -446,7 +446,7 @@ def afficher_victoire(fenetre, joueur_actif, nb_coups, python, sys_argv, bot=Fal
     fenetre = pygame.display.set_mode((800, 700))
 
     # ajout du son de victoire
-    pygame.mixer.music.load("Victory.mp3")
+    pygame.mixer.music.load("python/Victory.mp3")
     pygame.mixer.music.set_volume(0.5)
     pygame.mixer.music.play()
 

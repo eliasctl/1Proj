@@ -12,7 +12,7 @@ from pygame import mixer
 
 # Mise en place la musique
 mixer.init()
-mixer.music.load('Bloons TD battles music Monkeys and Bloons!.mp3')
+mixer.music.load('python/Bloons TD battles music Monkeys and Bloons!.mp3')
 mixer.music.set_volume(0.5)
 mixer.music.play(-1)
 
@@ -228,7 +228,7 @@ class Joueur:
                 if pygame.mouse.get_pressed()[0]:
                     pos = pygame.mouse.get_pos()
                     # Son du clic
-                    click = pygame.mixer.Sound("Click.mp3")
+                    click = pygame.mixer.Sound("python/Click.mp3")
                     click.set_volume(0.5)
                     click.play()
 
@@ -258,7 +258,7 @@ class Joueur:
         mur_possible = [[False for i in range(
             taille_plateau-1)] for j in range(taille_plateau-1)]
         # son pour bouton mur
-        click = pygame.mixer.Sound("Click.mp3")
+        click = pygame.mixer.Sound("python/Click.mp3")
         click.set_volume(0.5)
         click.play()
 
@@ -326,7 +326,7 @@ class Joueur:
         mur_possible = [[False for i in range(
             taille_plateau-1)] for j in range(taille_plateau-1)]
         # Son du bouton mur horizontal
-        click = pygame.mixer.Sound("Click.mp3")
+        click = pygame.mixer.Sound("python/Click.mp3")
         click.set_volume(0.5)
         click.play()
 
