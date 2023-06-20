@@ -481,7 +481,7 @@ if choix_jeu[2] == 1:
                 python = sys.executable
 
                 # ajout du son de victoire
-                pygame.mixer.music.load("Victory.mp3")
+                pygame.mixer.music.load("python/Victory.mp3")
                 pygame.mixer.music.set_volume(0.5)
                 pygame.mixer.music.play()
 
@@ -580,7 +580,7 @@ else:
                 python = sys.executable
 
                 # ajout du son de victoire
-                pygame.mixer.music.load("Victory.mp3")
+                pygame.mixer.music.load("python/Victory.mp3")
                 pygame.mixer.music.set_volume(0.5)
                 pygame.mixer.music.play()
 
