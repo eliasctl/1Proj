@@ -66,6 +66,7 @@ def affiche_text(screen, x, y, couleurText, text):
 # Affichage du menu de confirmation des choix
 
 
+
 def afficher_confirmation_choix(fenetre, nb_joueur, taille_plateau, mode_jeu):
     fenetre.fill(noir)
     affiche_text(fenetre, 250, 50, blanc, "Confirmation de vos choix : ")
@@ -107,240 +108,237 @@ def afficher_confirmation_choix(fenetre, nb_joueur, taille_plateau, mode_jeu):
 
 # Affichage des choix pour le mode de jeu et renvoie des choix sous forme de liste
 def afficher_menu_jeu(fenetre):
+    conf_choix = False
+    while conf_choix == False :
+        # Création de la liste des choix
+        liste_choix = []
 
-    # Création de la liste des choix
-    liste_choix = []
+        # Clear fenetre & affichage Bienvenue
+        fenetre.fill(noir)
+        affiche_text(fenetre, 250, 50, blanc, "Bienvenue sur Quoridor")
 
-    # Clear fenetre & affichage Bienvenue
-    fenetre.fill(noir)
-    affiche_text(fenetre, 250, 50, blanc, "Bienvenue sur Quoridor")
+        # Menu Choix Joueurs
+        affiche_text(fenetre, 15, 150, blanc,
+                    "Choississez le nombre de joueurs : ")
+        creation_bouton(fenetre, 470, 105, 100, 100,
+                        gris, blanc, "2 joueurs", True)
+        creation_bouton(fenetre, 600, 105, 100, 100,
+                        gris, blanc, "4 joueurs", True)
 
-    # Menu Choix Joueurs
-    affiche_text(fenetre, 15, 150, blanc,
-                 "Choississez le nombre de joueurs : ")
-    creation_bouton(fenetre, 470, 105, 100, 100,
-                    gris, blanc, "2 joueurs", True)
-    creation_bouton(fenetre, 600, 105, 100, 100,
-                    gris, blanc, "4 joueurs", True)
+        # Menu Choix Taille Plateau
+        affiche_text(fenetre, 15, 300, blanc,
+                    "Choississez la taille du plateau : ")
+        creation_bouton(fenetre, 400, 250, 90, 90, gris, blanc, "5 x 5", True)
+        creation_bouton(fenetre, 500, 250, 90, 90, gris, blanc, "7 x 7", True)
+        creation_bouton(fenetre, 600, 250, 90, 90, gris, blanc, "9 x 9", True)
+        creation_bouton(fenetre, 700, 250, 90, 90, gris, blanc, "11 x 11", True)
 
-    # Menu Choix Taille Plateau
-    affiche_text(fenetre, 15, 300, blanc,
-                 "Choississez la taille du plateau : ")
-    creation_bouton(fenetre, 400, 250, 90, 90, gris, blanc, "5 x 5", True)
-    creation_bouton(fenetre, 500, 250, 90, 90, gris, blanc, "7 x 7", True)
-    creation_bouton(fenetre, 600, 250, 90, 90, gris, blanc, "9 x 9", True)
-    creation_bouton(fenetre, 700, 250, 90, 90, gris, blanc, "11 x 11", True)
+        # Menu Choix Mode de Jeu
+        affiche_text(fenetre, 15, 425, blanc, "Choississez le mode de jeu : ")
+        creation_bouton(fenetre, 400, 375, 100, 115,
+                        gris, blanc, "Vs Humain", True)
+        creation_bouton(fenetre, 600, 375, 100, 115,
+                        gris, blanc, "Vs Bot (2J)", True)
 
-    # Menu Choix Mode de Jeu
-    affiche_text(fenetre, 15, 425, blanc, "Choississez le mode de jeu : ")
-    creation_bouton(fenetre, 400, 375, 100, 115,
-                    gris, blanc, "Vs Humain", True)
-    creation_bouton(fenetre, 600, 375, 100, 115,
-                    gris, blanc, "Vs Bot (2J)", True)
+        creation_bouton(fenetre, 300, 500, 90, 200, vert,
+                        blanc, "Lancer la partie", True)
 
-    creation_bouton(fenetre, 300, 500, 90, 200, vert,
-                    blanc, "Lancer la partie", True)
+        # Afficher l'écran
+        time.sleep(0.1)
+        pygame.display.flip()
 
-    # Afficher l'écran
-    time.sleep(0.1)
-    pygame.display.flip()
+        # Attente des choix
+        fin = 0
+        taille_plateau = 0
+        nb_joueur = 0
+        mode_jeu = 0
 
-    # Attente des choix
-    fin = 0
-    taille_plateau = 0
-    nb_joueur = 0
-    mode_jeu = 0
+        while fin == 0:
+            # Tests de sortie
+            ev = pygame.event.poll()
+            if ev.type == pygame.KEYDOWN and ev.key == pygame.K_ESCAPE:
+                pygame.quit()
 
-    while fin == 0:
-        # Tests de sortie
-        ev = pygame.event.poll()
-        if ev.type == pygame.KEYDOWN and ev.key == pygame.K_ESCAPE:
-            pygame.quit()
+            if ev.type == pygame.QUIT:
+                pygame.quit()
 
-        if ev.type == pygame.QUIT:
-            pygame.quit()
+            # Evennement de clic sur un bouton
+            if pygame.mouse.get_pressed()[0]:
 
-        # Evennement de clic sur un bouton
-        if pygame.mouse.get_pressed()[0]:
+                # Sons pour les boutons
+                click = pygame.mixer.Sound("python/Click.mp3")
+                click.set_volume(0.5)
+                click.play()
+                pygame.time.wait(100)
+                pos = pygame.mouse.get_pos()
+                if pos[0] > 400 and pos[0] < 490 and pos[1] > 250 and pos[1] < 340:
+                    # Taille du plateau 5x5
+                    taille_plateau = 5
 
-            # Sons pour les boutons
-            click = pygame.mixer.Sound("python/Click.mp3")
-            click.set_volume(0.5)
-            click.play()
-            pygame.time.wait(100)
-            pos = pygame.mouse.get_pos()
-            if pos[0] > 400 and pos[0] < 490 and pos[1] > 250 and pos[1] < 340:
-                # Taille du plateau 5x5
-                taille_plateau = 5
+                    # Suprresion des anciens bouttons
+                    pygame.draw.rect(fenetre, noir, (400, 250, 300, 90))
 
-                # Suprresion des anciens bouttons
-                pygame.draw.rect(fenetre, noir, (400, 250, 300, 90))
+                    # Update du bouton pour qu'il devienne bleu
+                    creation_bouton(fenetre, 400, 250, 90, 90,
+                                    bleu, blanc, "5 x 5", True)
 
-                # Update du bouton pour qu'il devienne bleu
-                creation_bouton(fenetre, 400, 250, 90, 90,
-                                bleu, blanc, "5 x 5", True)
+                    # Changement de couleur des autres boutons
+                    creation_bouton(fenetre, 500, 250, 90, 90,
+                                    gris, blanc, "7 x 7", True)
+                    creation_bouton(fenetre, 600, 250, 90, 90,
+                                    gris, blanc, "9 x 9", True)
+                    creation_bouton(fenetre, 700, 250, 90, 90,
+                                    gris, blanc, "11 x 11", True)
+                    pygame.display.flip()
 
-                # Changement de couleur des autres boutons
-                creation_bouton(fenetre, 500, 250, 90, 90,
-                                gris, blanc, "7 x 7", True)
-                creation_bouton(fenetre, 600, 250, 90, 90,
-                                gris, blanc, "9 x 9", True)
-                creation_bouton(fenetre, 700, 250, 90, 90,
-                                gris, blanc, "11 x 11", True)
-                pygame.display.flip()
+                if pos[0] > 500 and pos[0] < 590 and pos[1] > 250 and pos[1] < 340:
+                    # Taille du plateau 7x7
+                    taille_plateau = 7
 
-            if pos[0] > 500 and pos[0] < 590 and pos[1] > 250 and pos[1] < 340:
-                # Taille du plateau 7x7
-                taille_plateau = 7
+                    # Suprresion des anciens bouttons
+                    pygame.draw.rect(fenetre, noir, (400, 250, 300, 90))
 
-                # Suprresion des anciens bouttons
-                pygame.draw.rect(fenetre, noir, (400, 250, 300, 90))
+                    # Update du bouton pour qu'il devienne bleu
+                    creation_bouton(fenetre, 500, 250, 90, 90,
+                                    bleu, blanc, "7 x 7", True)
 
-                # Update du bouton pour qu'il devienne bleu
-                creation_bouton(fenetre, 500, 250, 90, 90,
-                                bleu, blanc, "7 x 7", True)
+                    # Changement de couleur des autres boutons
+                    creation_bouton(fenetre, 400, 250, 90, 90,
+                                    gris, blanc, "5 x 5", True)
+                    creation_bouton(fenetre, 600, 250, 90, 90,
+                                    gris, blanc, "9 x 9", True)
+                    creation_bouton(fenetre, 700, 250, 90, 90,
+                                    gris, blanc, "11 x 11", True)
 
-                # Changement de couleur des autres boutons
-                creation_bouton(fenetre, 400, 250, 90, 90,
-                                gris, blanc, "5 x 5", True)
-                creation_bouton(fenetre, 600, 250, 90, 90,
-                                gris, blanc, "9 x 9", True)
-                creation_bouton(fenetre, 700, 250, 90, 90,
-                                gris, blanc, "11 x 11", True)
+                    pygame.display.flip()
+                if pos[0] > 600 and pos[0] < 690 and pos[1] > 250 and pos[1] < 340:
+                    # Taille du plateau 9x9
+                    taille_plateau = 9
 
-                pygame.display.flip()
-            if pos[0] > 600 and pos[0] < 690 and pos[1] > 250 and pos[1] < 340:
-                # Taille du plateau 9x9
-                taille_plateau = 9
+                    # Suprresion des anciens bouttons
+                    pygame.draw.rect(fenetre, noir, (400, 250, 300, 90))
 
-                # Suprresion des anciens bouttons
-                pygame.draw.rect(fenetre, noir, (400, 250, 300, 90))
+                    # Update du bouton pour qu'il devienne bleu
+                    creation_bouton(fenetre, 600, 250, 90, 90,
+                                    bleu, blanc, "9 x 9", True)
 
-                # Update du bouton pour qu'il devienne bleu
-                creation_bouton(fenetre, 600, 250, 90, 90,
-                                bleu, blanc, "9 x 9", True)
+                    # Changement de couleur des autres boutons
+                    creation_bouton(fenetre, 400, 250, 90, 90,
+                                    gris, blanc, "5 x 5", True)
+                    creation_bouton(fenetre, 500, 250, 90, 90,
+                                    gris, blanc, "7 x 7", True)
+                    creation_bouton(fenetre, 700, 250, 90, 90,
+                                    gris, blanc, "11 x 11", True)
 
-                # Changement de couleur des autres boutons
-                creation_bouton(fenetre, 400, 250, 90, 90,
-                                gris, blanc, "5 x 5", True)
-                creation_bouton(fenetre, 500, 250, 90, 90,
-                                gris, blanc, "7 x 7", True)
-                creation_bouton(fenetre, 700, 250, 90, 90,
-                                gris, blanc, "11 x 11", True)
+                    pygame.display.flip()
+                if pos[0] > 700 and pos[0] < 790 and pos[1] > 250 and pos[1] < 340:
+                    # Taille du plateau 11x11
+                    taille_plateau = 11
 
-                pygame.display.flip()
-            if pos[0] > 700 and pos[0] < 790 and pos[1] > 250 and pos[1] < 340:
-                # Taille du plateau 11x11
-                taille_plateau = 11
+                    # Suprresion des anciens bouttons
+                    pygame.draw.rect(fenetre, noir, (400, 250, 300, 90))
 
-                # Suprresion des anciens bouttons
-                pygame.draw.rect(fenetre, noir, (400, 250, 300, 90))
+                    # Update du bouton pour qu'il devienne bleu
+                    creation_bouton(fenetre, 700, 250, 90, 90,
+                                    bleu, blanc, "11 x 11", True)
 
-                # Update du bouton pour qu'il devienne bleu
-                creation_bouton(fenetre, 700, 250, 90, 90,
-                                bleu, blanc, "11 x 11", True)
+                    # Changement de couleur des autres boutons
+                    creation_bouton(fenetre, 400, 250, 90, 90,
+                                    gris, blanc, "5 x 5", True)
+                    creation_bouton(fenetre, 500, 250, 90, 90,
+                                    gris, blanc, "7 x 7", True)
+                    creation_bouton(fenetre, 600, 250, 90, 90,
+                                    gris, blanc, "9 x 9", True)
 
-                # Changement de couleur des autres boutons
-                creation_bouton(fenetre, 400, 250, 90, 90,
-                                gris, blanc, "5 x 5", True)
-                creation_bouton(fenetre, 500, 250, 90, 90,
-                                gris, blanc, "7 x 7", True)
-                creation_bouton(fenetre, 600, 250, 90, 90,
-                                gris, blanc, "9 x 9", True)
+                    pygame.display.flip()
+                if pos[0] > 470 and pos[0] < 570 and pos[1] > 105 and pos[1] < 205:
+                    # 2 joueurs
+                    nb_joueur = 2
 
-                pygame.display.flip()
-            if pos[0] > 470 and pos[0] < 570 and pos[1] > 105 and pos[1] < 205:
-                # 2 joueurs
-                nb_joueur = 2
+                    # Suprresion des anciens bouttons
+                    pygame.draw.rect(fenetre, noir, (470, 105, 130, 100))
 
-                # Suprresion des anciens bouttons
-                pygame.draw.rect(fenetre, noir, (470, 105, 130, 100))
+                    # Update du bouton pour qu'il devienne bleu
+                    creation_bouton(fenetre, 470, 105, 100, 100,
+                                    bleu, blanc, "2 joueurs", True)
 
-                # Update du bouton pour qu'il devienne bleu
-                creation_bouton(fenetre, 470, 105, 100, 100,
-                                bleu, blanc, "2 joueurs", True)
+                    # Changement de couleur de l'aute boutton
+                    creation_bouton(fenetre, 600, 105, 100, 100,
+                                    gris, blanc, "4 joueurs", True)
 
-                # Changement de couleur de l'aute boutton
-                creation_bouton(fenetre, 600, 105, 100, 100,
-                                gris, blanc, "4 joueurs", True)
+                    pygame.display.flip()
+                if pos[0] > 600 and pos[0] < 700 and pos[1] > 105 and pos[1] < 205:
+                    # 4 joueurs
+                    nb_joueur = 4
+                    mode_jeu = 1
 
-                pygame.display.flip()
-            if pos[0] > 600 and pos[0] < 700 and pos[1] > 105 and pos[1] < 205:
-                # 4 joueurs
-                nb_joueur = 4
-                mode_jeu = 1
+                    # Suprresion des anciens bouttons
+                    pygame.draw.rect(fenetre, noir, (470, 105, 130, 100))
+                    pygame.draw.rect(fenetre, noir, (400, 375, 200, 115))
 
-                # Suprresion des anciens bouttons
-                pygame.draw.rect(fenetre, noir, (470, 105, 130, 100))
-                pygame.draw.rect(fenetre, noir, (400, 375, 200, 115))
+                    # Update du bouton pour qu'il devienne bleu
+                    creation_bouton(fenetre, 600, 105, 100, 100,
+                                    bleu, blanc, "4 joueurs", True)
+                    creation_bouton(fenetre, 400, 375, 100, 115,
+                                    bleu, blanc, "Vs Humain", True)
 
-                # Update du bouton pour qu'il devienne bleu
-                creation_bouton(fenetre, 600, 105, 100, 100,
-                                bleu, blanc, "4 joueurs", True)
-                creation_bouton(fenetre, 400, 375, 100, 115,
-                                bleu, blanc, "Vs Humain", True)
+                    # Changement de couleur de l'aute boutton
+                    creation_bouton(fenetre, 470, 105, 100, 100,
+                                    gris, blanc, "2 joueurs", True)
+                    creation_bouton(fenetre, 600, 375, 100, 115,
+                                    gris, blanc, "Vs Bot (2J)", True)
 
-                # Changement de couleur de l'aute boutton
-                creation_bouton(fenetre, 470, 105, 100, 100,
-                                gris, blanc, "2 joueurs", True)
-                creation_bouton(fenetre, 600, 375, 100, 115,
-                                gris, blanc, "Vs Bot (2J)", True)
+                    pygame.display.flip()
+                if pos[0] > 400 and pos[0] < 500 and pos[1] > 375 and pos[1] < 490:
+                    # Humain
+                    mode_jeu = 1
 
-                pygame.display.flip()
-            if pos[0] > 400 and pos[0] < 500 and pos[1] > 375 and pos[1] < 490:
-                # Humain
-                mode_jeu = 1
+                    # Suprresion des anciens bouttons
+                    pygame.draw.rect(fenetre, noir, (400, 375, 200, 115))
 
-                # Suprresion des anciens bouttons
-                pygame.draw.rect(fenetre, noir, (400, 375, 200, 115))
+                    # Update du bouton pour qu'il devienne bleu
+                    creation_bouton(fenetre, 400, 375, 100, 115,
+                                    bleu, blanc, "Vs Humain", True)
 
-                # Update du bouton pour qu'il devienne bleu
-                creation_bouton(fenetre, 400, 375, 100, 115,
-                                bleu, blanc, "Vs Humain", True)
+                    # Changement de couleur de l'aute boutton
+                    creation_bouton(fenetre, 600, 375, 100, 115,
+                                    gris, blanc, "Vs Bot (2J)", True)
 
-                # Changement de couleur de l'aute boutton
-                creation_bouton(fenetre, 600, 375, 100, 115,
-                                gris, blanc, "Vs Bot (2J)", True)
+                    pygame.display.flip()
+                if pos[0] > 600 and pos[0] < 700 and pos[1] > 375 and pos[1] < 490:
+                    # Bot
+                    mode_jeu = 2
+                    nb_joueur = 2
 
-                pygame.display.flip()
-            if pos[0] > 600 and pos[0] < 700 and pos[1] > 375 and pos[1] < 490:
-                # Bot
-                mode_jeu = 2
-                nb_joueur = 2
+                    # Suprresion des anciens bouttons
+                    pygame.draw.rect(fenetre, noir, (400, 375, 200, 115))
+                    pygame.draw.rect(fenetre, noir, (470, 105, 130, 100))
 
-                # Suprresion des anciens bouttons
-                pygame.draw.rect(fenetre, noir, (400, 375, 200, 115))
-                pygame.draw.rect(fenetre, noir, (470, 105, 130, 100))
+                    # Update des boutons pour qu'il devienne bleu
+                    creation_bouton(fenetre, 600, 375, 100, 115,
+                                    bleu, blanc, "Vs Bot (2J)", True)
+                    creation_bouton(fenetre, 470, 105, 100, 100,
+                                    bleu, blanc, "2 joueurs", True)
 
-                # Update des boutons pour qu'il devienne bleu
-                creation_bouton(fenetre, 600, 375, 100, 115,
-                                bleu, blanc, "Vs Bot (2J)", True)
-                creation_bouton(fenetre, 470, 105, 100, 100,
-                                bleu, blanc, "2 joueurs", True)
+                    # Changement de couleur de l'aute boutton
+                    creation_bouton(fenetre, 400, 375, 100, 115,
+                                    gris, blanc, "Vs Humain", True)
+                    creation_bouton(fenetre, 600, 105, 100, 100,
+                                    gris, blanc, "4 joueurs", True)
 
-                # Changement de couleur de l'aute boutton
-                creation_bouton(fenetre, 400, 375, 100, 115,
-                                gris, blanc, "Vs Humain", True)
-                creation_bouton(fenetre, 600, 105, 100, 100,
-                                gris, blanc, "4 joueurs", True)
+                    pygame.display.flip()
 
-                pygame.display.flip()
+                if pos[0] > 300 and pos[0] < 500 and pos[1] > 500 and pos[1] < 590:
+                    if taille_plateau != 0 and nb_joueur != 0 and mode_jeu != 0:
+                        fin = 1
 
-            if pos[0] > 300 and pos[0] < 500 and pos[1] > 500 and pos[1] < 590:
-                if taille_plateau != 0 and nb_joueur != 0 and mode_jeu != 0:
-                    fin = 1
+        # Ajout des paramètres à la liste
+        liste_choix.append(nb_joueur)
+        liste_choix.append(taille_plateau)
+        liste_choix.append(mode_jeu)
 
-    # Ajout des paramètres à la liste
-    liste_choix.append(nb_joueur)
-    liste_choix.append(taille_plateau)
-    liste_choix.append(mode_jeu)
-
-    conf_choix = afficher_confirmation_choix(
-        fenetre, nb_joueur, taille_plateau, mode_jeu)
-    if conf_choix == True:
-        return liste_choix
-    else:
-        afficher_menu_jeu(fenetre)
+        conf_choix = afficher_confirmation_choix(fenetre, nb_joueur, taille_plateau, mode_jeu)
+    return liste_choix
 
 
 # Affichage du plateau de jeu
